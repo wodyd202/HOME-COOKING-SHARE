@@ -22,7 +22,13 @@ public interface Validator<T> {
 		}
 	}
 
-	default void verfyNotEmptyStringValue(String value, CustomArgumentException e) throws CustomArgumentException {
+	default void verfyNotNullObject(Object obj,CustomArgumentException e) {
+		if(obj == null) {
+			throw e;
+		}
+	}
+	
+	default void verfyNotEmptyStringValue(String value, CustomArgumentException e) {
 		if (value == null || value.isEmpty()) {
 			throw e;
 		}

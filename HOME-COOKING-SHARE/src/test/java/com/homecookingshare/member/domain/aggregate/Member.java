@@ -6,6 +6,7 @@ import com.homecookingshare.member.domain.Email;
 import com.homecookingshare.member.domain.Password;
 import com.homecookingshare.member.domain.Profile;
 import com.homecookingshare.member.service.register.RegisterMember;
+import com.homecookingshare.member.service.update.ChangeImageMember;
 
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -37,6 +38,10 @@ public class Member {
 	
 	private Date createDateTime;
 
+	public void changeProfileImage(String fileName) {
+		this.profile = new Profile(this.profile.getNickName(), fileName);
+	}
+	
 	public Member(RegisterMember registerMember) {
 		this.email = new Email(registerMember.getEmail());
 		this.password = new Password(registerMember.getPassword());

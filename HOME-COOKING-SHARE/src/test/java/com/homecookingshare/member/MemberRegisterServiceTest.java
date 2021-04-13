@@ -8,7 +8,6 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -18,18 +17,9 @@ import com.homecookingshare.member.domain.aggregate.Member;
 import com.homecookingshare.member.domain.aggregate.Member.MemberRole;
 import com.homecookingshare.member.domain.aggregate.Member.MemberState;
 import com.homecookingshare.member.domain.aggregate.exception.InvalidMemberException;
-import com.homecookingshare.member.service.register.MemberRegisterService;
 import com.homecookingshare.member.service.register.RegisterMember;
-import com.homecookingshare.member.service.register.RegisterMemberValidator;
 
 public class MemberRegisterServiceTest extends MemberTest{
-	
-	@BeforeEach
-	void setUp() {
-		registerMemberValidator = new RegisterMemberValidator();
-		memberRepository = new FakeMemberRepository();
-		memberRegisterService = new MemberRegisterService(registerMemberValidator, memberRepository);
-	}
 	
 	@Test
 	@DisplayName("이메일 정규식이 일치하지 않을 때_에러")
