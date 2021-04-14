@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-import com.homecookingshare.member.domain.Email;
-import com.homecookingshare.member.domain.aggregate.Member;
+import com.homecookingshare.member.Email;
+import com.homecookingshare.member.aggregate.Member;
 import com.homecookingshare.member.infrastructure.MemberRepository;
 
 public class FakeMemberRepository implements MemberRepository {

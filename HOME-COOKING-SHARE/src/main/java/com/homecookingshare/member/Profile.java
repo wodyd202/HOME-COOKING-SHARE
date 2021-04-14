@@ -1,4 +1,4 @@
-package com.homecookingshare.member.domain;
+package com.homecookingshare.member;
 
 import com.homecookingshare.member.service.register.RegisterMember;
 

@@ -3,7 +3,7 @@ package com.homecookingshare.member.service.update;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.homecookingshare.common.Validator;
-import com.homecookingshare.member.domain.aggregate.exception.InvalidMemberException;
+import com.homecookingshare.member.aggregate.exception.InvalidMemberException;
 
 public class UpdateMemberValidator implements Validator<ChangeImageMember> {
 

@@ -1,7 +1,7 @@
 package com.homecookingshare.member.service.register;
 
 import com.homecookingshare.common.Validator;
-import com.homecookingshare.member.domain.aggregate.exception.InvalidMemberException;
+import com.homecookingshare.member.aggregate.exception.InvalidMemberException;
 
 public class RegisterMemberValidator implements Validator<RegisterMember> {
 

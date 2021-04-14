@@ -12,13 +12,13 @@ import com.homecookingshare.member.service.update.MemberUpdateService;
 import com.homecookingshare.member.service.update.UpdateMemberValidator;
 
 public class MemberTest {
-	Validator<RegisterMember> registerMemberValidator;
-	Validator<ChangeImageMember> updateMemberValidator;
+	protected Validator<RegisterMember> registerMemberValidator;
+	protected Validator<ChangeImageMember> updateMemberValidator;
 
-	MemberRegisterService memberRegisterService;
-	MemberUpdateService memberUpdateService;
+	protected MemberRegisterService memberRegisterService;
+	protected MemberUpdateService memberUpdateService;
 	
-	MemberRepository memberRepository;
+	protected MemberRepository memberRepository;
 	
 	@BeforeEach
 	void setUp() {

@@ -10,9 +10,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
 
-import com.homecookingshare.member.domain.Email;
-import com.homecookingshare.member.domain.aggregate.Member;
-import com.homecookingshare.member.domain.aggregate.exception.InvalidMemberException;
+import com.homecookingshare.member.Email;
+import com.homecookingshare.member.aggregate.Member;
+import com.homecookingshare.member.aggregate.exception.InvalidMemberException;
 import com.homecookingshare.member.service.register.RegisterMember;
 import com.homecookingshare.member.service.update.ChangeImageMember;
 

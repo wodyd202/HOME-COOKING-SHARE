@@ -2,6 +2,7 @@ package com.homecookingshare.member.service.register;
 
 import com.homecookingshare.common.AbstractRegisterService;
 import com.homecookingshare.common.Validator;
+import com.homecookingshare.member.aggregate.Member;
 import com.homecookingshare.member.infrastructure.MemberRepository;
 
 public class MemberRegisterService extends AbstractRegisterService<RegisterMember> {
@@ -10,7 +11,8 @@ public class MemberRegisterService extends AbstractRegisterService<RegisterMembe
 	
 	@Override
 	protected void save(RegisterMember obj) {
-		memberRepository.save(obj.toEntity());
+		Member entity = new Member(obj, eventPublisher);
+		memberRepository.save(entity);
 	}
 
 	public MemberRegisterService(Validator<RegisterMember> validate, MemberRepository memberRepository) {

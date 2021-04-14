@@ -1,21 +1,35 @@
 package com.homecookingshare.common;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.transaction.annotation.Transactional;
+
 abstract public class AbstractPersistService<T> {
+	@Autowired
+	protected ApplicationEventPublisher eventPublisher;
 	protected Validator<T> validator;
 
+	@Transactional
 	abstract protected void reigsterEntity(T obj);
 	
+	@Transactional
 	protected void afterValidation(T obj) {
 	}
-	
+
+	@Transactional
 	protected void beforeValidation(T obj) {
 	}
-	
+
+	@Transactional
 	public void register(T obj) {
 		beforeValidation(obj);
 		validator.validate(obj);
 		afterValidation(obj);
 		reigsterEntity(obj);
+	}
+
+	public AbstractPersistService(ApplicationEventPublisher eventPublisher, Validator<T> validate) {
+		this(validate);
 	}
 
 	public AbstractPersistService(Validator<T> validate) {

@@ -6,8 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.homecookingshare.common.AbstractUpdateService;
 import com.homecookingshare.common.Validator;
-import com.homecookingshare.member.domain.Email;
-import com.homecookingshare.member.domain.aggregate.Member;
+import com.homecookingshare.member.Email;
+import com.homecookingshare.member.aggregate.Member;
 import com.homecookingshare.member.infrastructure.MemberRepository;
 
 public class MemberUpdateService extends AbstractUpdateService<ChangeImageMember>{

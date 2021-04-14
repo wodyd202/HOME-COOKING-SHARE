@@ -1,4 +1,4 @@
-package com.homecookingshare.member.domain;
+package com.homecookingshare.member;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

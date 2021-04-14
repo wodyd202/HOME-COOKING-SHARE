@@ -11,12 +11,12 @@ import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import com.homecookingshare.member.domain.Email;
-import com.homecookingshare.member.domain.Password;
-import com.homecookingshare.member.domain.aggregate.Member;
-import com.homecookingshare.member.domain.aggregate.Member.MemberRole;
-import com.homecookingshare.member.domain.aggregate.Member.MemberState;
-import com.homecookingshare.member.domain.aggregate.exception.InvalidMemberException;
+import com.homecookingshare.member.Email;
+import com.homecookingshare.member.Password;
+import com.homecookingshare.member.aggregate.Member;
+import com.homecookingshare.member.aggregate.Member.MemberRole;
+import com.homecookingshare.member.aggregate.Member.MemberState;
+import com.homecookingshare.member.aggregate.exception.InvalidMemberException;
 import com.homecookingshare.member.service.register.RegisterMember;
 
 public class MemberRegisterServiceTest extends MemberTest{

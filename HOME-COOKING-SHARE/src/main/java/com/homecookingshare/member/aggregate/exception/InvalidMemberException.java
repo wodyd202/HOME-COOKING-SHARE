@@ -1,4 +1,4 @@
-package com.homecookingshare.member.domain.aggregate.exception;
+package com.homecookingshare.member.aggregate.exception;
 
 import com.homecookingshare.common.CustomArgumentException;
 
