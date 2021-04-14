@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 import com.homecookingshare.member.aggregate.event.MemberEvent;
 import com.homecookingshare.member.aggregate.event.MemberEvent.MemberEventType;
-import com.homecookingshare.member.infrastructure.MemberRedisRepository;
+import com.homecookingshare.member.infrastructure.SimpleMemberRedisRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberRegisterListener implements ApplicationListener<MemberEvent>{
 	
-	private final MemberRedisRepository memberRedisRepository;
+	private final SimpleMemberRedisRepository memberRedisRepository;
 	
 	@Override
 	public void onApplicationEvent(MemberEvent event) {
