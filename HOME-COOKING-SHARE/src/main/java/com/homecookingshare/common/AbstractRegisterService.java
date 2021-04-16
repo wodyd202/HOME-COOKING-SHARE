@@ -1,6 +1,6 @@
 package com.homecookingshare.common;
 
-import org.springframework.transaction.annotation.Transactional;
+import javax.transaction.Transactional;
 
 public abstract class AbstractRegisterService<T> extends AbstractPersistService<T> {
 

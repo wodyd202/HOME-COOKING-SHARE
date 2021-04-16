@@ -1,5 +1,7 @@
 package com.homecookingshare.member.service.register;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,4 +15,8 @@ public class RegisterMember {
 	private String email;
 	private String nickName;
 	private String password;
+	
+	public void encodePassword(PasswordEncoder encoder) {
+		this.password = encoder.encode(this.password);
+	}
 }

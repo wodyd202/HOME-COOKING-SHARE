@@ -10,6 +10,21 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+/**
+ * 
+ * @author LJY
+ * 
+ * 1. 레시피 id는 UUID로 사용한다.
+ * 2. 레시피 title은 [한글 + 공백] 최대 12자까지 허용한다.
+ * 3. 레시피 content는 [한글 + 공백 + 영어(대,소문자) + 숫자] 최대 100자까지 허용한다.
+ * 4. 조리 시간은 최대 30일(86400 * 30 * 1000)까지 허용한다.
+ * 5. 레시피 tip은 [한글 + 공백 + 영어(대,소문자) + 숫자] 최대 100자까지 허용한다.
+ * 6. 재료의 타이틀은 [한글 + 숫자 + 공백] 최대 10자까지 허용한다.
+ * 7. 재료의 용량은 [한글 + 숫자 + 공백 + 영어(대,소문자)] 최대 10자까지 허용한다.
+ * 8. 레시피 카테고리는 등록 전 이미 등록된 카테고리인지 확인한다.
+ * 
+ */
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Recipe {

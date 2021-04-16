@@ -2,18 +2,18 @@ package com.homecookingshare.recipe;
 
 import com.homecookingshare.common.AbstractRegisterService;
 import com.homecookingshare.common.Validator;
-import com.homecookingshare.member.infrastructure.MemberRepository;
+import com.homecookingshare.member.infrastructure.MemberEventRepository;
 
 public class RecipeRegisterService extends AbstractRegisterService<RegisterRecipe> {
 	private final RecipeRepository recipeRepository;
-	private final MemberRepository memberRepository;
+	private final MemberEventRepository memberRepository;
 	
 	@Override
 	protected void save(RegisterRecipe obj) {
 		recipeRepository.save(obj.toEntity(Recipe.createId()));
 	}
 	
-	public RecipeRegisterService(Validator<RegisterRecipe> validate, RecipeRepository recipeRepository, MemberRepository memberRepository) {
+	public RecipeRegisterService(Validator<RegisterRecipe> validate, RecipeRepository recipeRepository, MemberEventRepository memberRepository) {
 		super(validate);
 		this.memberRepository = memberRepository;
 		this.recipeRepository = recipeRepository;

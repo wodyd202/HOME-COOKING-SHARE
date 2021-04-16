@@ -1,4 +1,4 @@
-package com.homecookingshare.common.config;
+package com.homecookingshare.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -34,6 +34,7 @@ public class RedisConfig {
 		redisTemplate.setConnectionFactory(redisConnectionFactory());
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+		redisTemplate.setEnableTransactionSupport(true);
 		return redisTemplate;
 	}
 }

@@ -1,8 +1,9 @@
 package com.homecookingshare.common;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.transaction.annotation.Transactional;
 
 abstract public class AbstractPersistService<T> {
 	@Autowired
@@ -19,7 +20,7 @@ abstract public class AbstractPersistService<T> {
 	@Transactional
 	protected void beforeValidation(T obj) {
 	}
-
+	
 	@Transactional
 	public void register(T obj) {
 		beforeValidation(obj);

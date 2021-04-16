@@ -1,21 +1,52 @@
 package com.homecookingshare.member.aggregate.event;
 
-import org.springframework.context.ApplicationEvent;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Index;
+import javax.persistence.Lob;
+import javax.persistence.Table;
 
-import com.homecookingshare.member.aggregate.Member;
+import com.homecookingshare.common.event.BaseEvent;
+import com.homecookingshare.member.Email;
+import com.homecookingshare.member.aggregate.PayloadConverter;
 
 import lombok.Getter;
 
 @Getter
-public class MemberEvent extends ApplicationEvent {
+@Entity
+@Table(name = "member_event", indexes = @Index(columnList = "id"))
+public class MemberEvent extends BaseEvent {
 	private static final long serialVersionUID = 1L;
-	private Member member;
+
+	@Id
+	@GeneratedValue
+	private Long seq;
+
+	@Embedded
+	@AttributeOverride(name = "value", column = @Column(name = "id", length = 100, nullable = false))
+	private Email id;
+
+	@Lob
+	@Column(nullable = false, name = "payload")
+	@Convert(converter = PayloadConverter.class)
+	private Object payload;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, name = "type", length = 20)
 	private MemberEventType eventType;
-	
-	public MemberEvent(Object source,MemberEventType eventType) {
+
+	public MemberEvent(Email id, Object source, MemberEventType type) {
 		super(source);
-		this.member = (Member) source;
-		this.eventType = eventType;
+		this.eventType = type;
+		this.id = id;
+		this.payload = source;
 	}
 
 	public enum MemberEventType {
