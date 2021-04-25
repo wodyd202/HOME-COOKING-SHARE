@@ -18,7 +18,7 @@ public class LoginFaildHandler implements WebResponseExceptionTranslator<OAuth2E
 		if(message != null && message.equals("User is disabled")) {
 			responseMap.put("message", "이메일 인증이 필요한 계정입니다.");
 		}else {
-			responseMap.put("message", e.getMessage());
+			responseMap.put("message", "사용자 이메일 혹은 비밀번호가 일치하지 않습니다.");
 		}
 		return new ResponseEntity(responseMap, HttpStatus.UNAUTHORIZED);
 	}

@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import com.homecookingshare.member.Email;
+import com.homecookingshare.command.member.values.Email;
 
 import lombok.AccessLevel;
 import lombok.Getter;

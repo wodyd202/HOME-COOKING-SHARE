@@ -18,8 +18,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 			.and()
 			.formLogin().disable();
 		http.authorizeRequests()
-		.antMatchers(HttpMethod.POST,"/api/v1/user").permitAll()
-		.antMatchers(HttpMethod.PUT,"/api/v1/user").authenticated()
+		.antMatchers(HttpMethod.POST,"/api/v1/member").permitAll()
+		.antMatchers(HttpMethod.PUT,"/api/v1/member").authenticated()
+		.antMatchers(HttpMethod.POST,"/api/v1/member/auth").permitAll()
+		.antMatchers(HttpMethod.GET,"/api/v1/member/auth").permitAll()
 		.and()
 		.exceptionHandling()
 		.accessDeniedHandler(new OAuth2AccessDeniedHandler());

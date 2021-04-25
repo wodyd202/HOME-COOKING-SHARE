@@ -22,11 +22,12 @@ abstract public class AbstractPersistService<T> {
 	}
 	
 	@Transactional
-	public void register(T obj) {
+	public T register(T obj) {
 		beforeValidation(obj);
 		validator.validate(obj);
 		afterValidation(obj);
 		reigsterEntity(obj);
+		return obj;
 	}
 
 	public AbstractPersistService(ApplicationEventPublisher eventPublisher, Validator<T> validate) {

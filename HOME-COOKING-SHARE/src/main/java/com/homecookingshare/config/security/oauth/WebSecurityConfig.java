@@ -17,7 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 
-import com.homecookingshare.member.service.load.MemberLoadService;
+import com.homecookingshare.query.service.MemberLoadService;
 
 @Configuration
 @EnableWebSecurity
@@ -58,7 +58,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return super.authenticationManager();
 	}
 	
-	@Bean
+	@Bean(name = "jdbcTokenStore")
     public TokenStore tokenStore() {
         return new JdbcTokenStore(dataSource);
     }

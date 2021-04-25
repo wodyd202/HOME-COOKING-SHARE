@@ -1,6 +1,6 @@
 package com.homecookingshare.recipe;
 
-import com.homecookingshare.member.Email;
+import com.homecookingshare.command.member.values.Email;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

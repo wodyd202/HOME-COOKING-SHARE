@@ -7,8 +7,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.homecookingshare.member.aggregate.Member;
-import com.homecookingshare.member.aggregate.Member.MemberState;
+import com.homecookingshare.command.member.values.AuthType;
+import com.homecookingshare.command.member.values.MemberState;
+import com.homecookingshare.query.projections.QueryMember;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class MemberPrincipal implements UserDetails {
 	private static final long serialVersionUID = 1L;
-	private Member member;
+	private QueryMember member;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -27,12 +28,12 @@ public class MemberPrincipal implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return member.getPassword().toString();
+		return member.getPassword();
 	}
 
 	@Override
 	public String getUsername() {
-		return member.getEmail().toString();
+		return member.getEmail();
 	}
 
 	@Override

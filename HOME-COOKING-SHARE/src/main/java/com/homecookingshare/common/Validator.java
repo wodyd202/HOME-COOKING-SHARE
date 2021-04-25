@@ -47,9 +47,9 @@ public interface Validator<T> {
 			throw e;
 		}
 	}
-
+	
 	default void verfyIsImageFile(MultipartFile file, CustomArgumentException e) {
-		String name = file.getName();
+		String name = file.getOriginalFilename();
 		int lastIndexOf = name.lastIndexOf(".");
 		String extention = name.substring(lastIndexOf, name.length()).toUpperCase();
 		if (!extention.equals(".JPG") && !extention.equals(".JPEG") && !extention.equals(".PNG")) {
