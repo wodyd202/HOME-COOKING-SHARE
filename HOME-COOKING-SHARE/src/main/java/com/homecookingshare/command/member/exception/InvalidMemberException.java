@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public class InvalidMemberException extends CustomArgumentException{
 	private static final long serialVersionUID = 1L;
-	public InvalidMemberException(String msg, String field) {
-		super(msg, field);
+	public InvalidMemberException(String msg) {
+		super(msg);
 	}
 }

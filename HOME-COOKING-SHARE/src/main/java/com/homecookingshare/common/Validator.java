@@ -8,27 +8,27 @@ import org.springframework.web.multipart.MultipartFile;
 public interface Validator<T> {
 	void validate(T obj);
 
-	default void verfyGtFirstNumberValue(long value, int first, CustomArgumentException e) {
+	default void verifyGtFirstNumberValue(long value, int first, CustomArgumentException e) {
 		if (first >= value) {
 			throw e;
 		}
 	}
 
-	default void verfyGteFirstAndLteLastNumberValue(long value, long first, long last, CustomArgumentException e) {
+	default void verifyGteFirstAndLteLastNumberValue(long value, long first, long last, CustomArgumentException e) {
 		if (first > value || value > last) {
 			throw e;
 		}
 	}
 
-	default void verfyRegexPatternStringValue(String value, String regex, int start, int end,
+	default void verifyRegexPatternStringValue(String value, String regex, int start, int end,
 			CustomArgumentException e) {
-		verfyRegexPatternStringValue(value, regex, e);
+		verifyRegexPatternStringValue(value, regex, e);
 		if (value.length() < start || value.length() > end) {
 			throw e;
 		}
 	}
 
-	default void verfyRegexPatternStringValue(String value, String regex, CustomArgumentException e) {
+	default void verifyRegexPatternStringValue(String value, String regex, CustomArgumentException e) {
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(value);
 		if (!m.matches()) {
@@ -36,19 +36,19 @@ public interface Validator<T> {
 		}
 	}
 
-	default void verfyNotNullObject(Object obj, CustomArgumentException e) {
+	default void verifyNotNullObject(Object obj, CustomArgumentException e) {
 		if (obj == null) {
 			throw e;
 		}
 	}
 
-	default void verfyNotEmptyStringValue(String value, CustomArgumentException e) {
+	default void verifyNotEmptyStringValue(String value, CustomArgumentException e) {
 		if (value == null || value.isEmpty()) {
 			throw e;
 		}
 	}
 	
-	default void verfyIsImageFile(MultipartFile file, CustomArgumentException e) {
+	default void verifyIsImageFile(MultipartFile file, CustomArgumentException e) {
 		String name = file.getOriginalFilename();
 		int lastIndexOf = name.lastIndexOf(".");
 		String extention = name.substring(lastIndexOf, name.length()).toUpperCase();

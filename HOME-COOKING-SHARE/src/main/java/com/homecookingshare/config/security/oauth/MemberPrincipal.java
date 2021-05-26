@@ -7,8 +7,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.homecookingshare.command.member.values.AuthType;
-import com.homecookingshare.command.member.values.MemberState;
+import com.homecookingshare.domain.member.AuthType;
+import com.homecookingshare.domain.member.MemberState;
 import com.homecookingshare.query.projections.QueryMember;
 
 import lombok.AllArgsConstructor;

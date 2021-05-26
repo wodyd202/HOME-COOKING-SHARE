@@ -8,5 +8,4 @@ import lombok.Getter;
 public class CustomArgumentException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
 	protected String msg;
-	protected String field;
 }

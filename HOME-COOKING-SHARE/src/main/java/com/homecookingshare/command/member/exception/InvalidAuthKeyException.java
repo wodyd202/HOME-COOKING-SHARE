@@ -8,7 +8,7 @@ import lombok.Getter;
 public class InvalidAuthKeyException extends CustomArgumentException{
 	private static final long serialVersionUID = 1L;
 
-	public InvalidAuthKeyException(String msg, String field) {
-		super(msg, field);
+	public InvalidAuthKeyException(String msg) {
+		super(msg);
 	}
 }
