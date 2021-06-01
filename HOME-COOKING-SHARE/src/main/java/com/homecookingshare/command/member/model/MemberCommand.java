@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class MemberCommand {
 	
@@ -19,6 +20,7 @@ public class MemberCommand {
 	}
 	
 	@Getter
+	@Setter
 	@AllArgsConstructor
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class ChangeImage {

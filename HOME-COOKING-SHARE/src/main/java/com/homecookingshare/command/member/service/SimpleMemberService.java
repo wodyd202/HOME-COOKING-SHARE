@@ -68,7 +68,7 @@ public class SimpleMemberService implements MemberService {
 	}
 	
 	private String encodeFileName(MultipartFile file) {
-		String name = file.getName();
+		String name = file.getOriginalFilename();
 		int lastIndexOf = name.lastIndexOf(".");
 		return  UUID.randomUUID() + name.substring(lastIndexOf, name.length()).toUpperCase();
 	}

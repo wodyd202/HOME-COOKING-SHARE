@@ -58,7 +58,7 @@ public class MemberCommandApi {
 	@ApiOperation("사용자 프로필 이미지 변경")
 	@PutMapping("image")
 	public ResponseEntity<Member> execute(
-			@RequestBody MemberCommand.ChangeImage command,
+			MemberCommand.ChangeImage command,
 			@ApiIgnore
 			@LoginUser com.homecookingshare.domain.member.read.Member loginMember
 		){
