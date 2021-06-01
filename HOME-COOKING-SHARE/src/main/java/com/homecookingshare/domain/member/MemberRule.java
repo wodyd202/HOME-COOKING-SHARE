@@ -1,5 +1,5 @@
 package com.homecookingshare.domain.member;
 
-public enum MemberRole {
+public enum MemberRule {
 	MEMBER, ADMIN
 }

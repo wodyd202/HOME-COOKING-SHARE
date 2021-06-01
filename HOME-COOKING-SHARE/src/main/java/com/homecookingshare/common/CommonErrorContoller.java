@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class CommonErrorContoller {
 	@ExceptionHandler(HttpMessageNotReadableException.class)
 	public ResponseEntity<ErrorResponse> HttpMessageNotReadableException(HttpMessageNotReadableException e) {
-		return ResponseEntity.badRequest().body(new ErrorResponse("값을 형식에 맞게 입력해주세요.", null));
+		return ResponseEntity.badRequest().body(new ErrorResponse("값을 형식에 맞게 입력해주세요."));
 	}
 
 	@ExceptionHandler(HttpRequestMethodNotSupportedException.class)

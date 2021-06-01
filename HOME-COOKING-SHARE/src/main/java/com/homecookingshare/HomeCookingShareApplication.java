@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import com.customConfig.EnableRedisInitModule;
 
 @SpringBootApplication
-@EnableRedisInitModule
+//@EnableRedisInitModule
 @EnableAsync(proxyTargetClass = true)
 public class HomeCookingShareApplication {
 

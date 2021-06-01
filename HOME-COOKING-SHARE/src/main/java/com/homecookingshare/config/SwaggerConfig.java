@@ -28,7 +28,6 @@ public class SwaggerConfig {
                 .build();
     }
 
-    @SuppressWarnings("unchecked")
 	@Bean
     public Docket userApi() {
         return new Docket(DocumentationType.SWAGGER_2)
@@ -37,11 +36,11 @@ public class SwaggerConfig {
                 .select()
                 .apis(
                 		Predicates.or(
-        				RequestHandlerSelectors
-    					.basePackage("com.homecookingshare.command.member.api")
-    					)
-            		)
-                .paths(PathSelectors.ant("/api/v1/**"))
+        				RequestHandlerSelectors.basePackage("com.homecookingshare.config.security.jwt.api"),
+        				RequestHandlerSelectors.basePackage("com.homecookingshare.command.member.api")
+					)
+        		)
+                .paths(PathSelectors.ant("/**"))
                 .build();
     }
 }

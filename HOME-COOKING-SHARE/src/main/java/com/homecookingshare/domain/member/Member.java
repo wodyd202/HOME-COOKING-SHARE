@@ -19,7 +19,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.homecookingshare.command.member.service.MemberCommand.RegisterMemberCommand;
+import com.homecookingshare.command.member.model.MemberCommand.RegisterMemberCommand;
 import com.homecookingshare.domain.member.event.ChangedMemberImage;
 import com.homecookingshare.domain.member.event.ChangedMemberPassword;
 import com.homecookingshare.domain.member.event.RegisterdMember;
@@ -30,7 +30,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Table(name = "member")
+@Table(name = "MEMBER")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @DynamicUpdate
 public class Member extends AbstractAggregateRoot<Member> implements Serializable {
@@ -52,7 +52,7 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 	private Profile profile;
 
 	@Enumerated(EnumType.STRING)
-	private MemberRole role;
+	private MemberRule role;
 
 	@Enumerated(EnumType.STRING)
 	private AuthType authType;
@@ -67,11 +67,11 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 		this.email = email;
 	}
 
-	Member(String email, String password, String nickName) {
+	protected Member(String email, String password, String nickName) {
 		this.email = new Email(email);
 		this.password = new Password(password);
 		this.profile = new Profile(nickName);
-		this.role = MemberRole.MEMBER;
+		this.role = MemberRule.MEMBER;
 		this.authType = AuthType.NO;
 		this.state = MemberState.CREATE;
 		this.createDateTime = new Date();

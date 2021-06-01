@@ -4,6 +4,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.homecookingshare.command.member.exception.AlreadyDeletedMemberException;
@@ -11,9 +12,9 @@ import com.homecookingshare.command.member.exception.AlreadyExistMemberException
 import com.homecookingshare.command.member.exception.InvalidMemberException;
 import com.homecookingshare.command.member.exception.MemberNotFoundException;
 import com.homecookingshare.command.member.infra.JpaMemberRepository;
-import com.homecookingshare.command.member.service.MemberCommand.ChangeImageCommand;
-import com.homecookingshare.command.member.service.MemberCommand.ChangePasswordCommand;
-import com.homecookingshare.command.member.service.MemberCommand.RegisterMemberCommand;
+import com.homecookingshare.command.member.model.MemberCommand.ChangeImageCommand;
+import com.homecookingshare.command.member.model.MemberCommand.ChangePasswordCommand;
+import com.homecookingshare.command.member.model.MemberCommand.RegisterMemberCommand;
 import com.homecookingshare.common.Validator;
 import com.homecookingshare.common.fileUpload.FileUploader;
 import com.homecookingshare.domain.member.Email;
@@ -21,6 +22,7 @@ import com.homecookingshare.domain.member.Member;
 
 import lombok.AllArgsConstructor;
 
+@Service
 @AllArgsConstructor
 public class SimpleMemberService implements MemberService {
 	private PasswordEncoder passwordEncoder;

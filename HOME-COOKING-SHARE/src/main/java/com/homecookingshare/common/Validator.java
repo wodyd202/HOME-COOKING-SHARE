@@ -1,12 +1,26 @@
 package com.homecookingshare.common;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.web.multipart.MultipartFile;
 
 public interface Validator<T> {
+	List<Character> NOT_ALLOWED_SPECIAL_CHAR = Arrays.asList('<', '>', '?', '"', '\'');
+
 	void validate(T obj);
+
+	default void verifyContainUnAllowedSpecialChar(String value, CustomArgumentException e) {
+		NOT_ALLOWED_SPECIAL_CHAR.forEach(specialChar -> {
+			for (int i = 0; i < value.length(); i++) {
+				if(value.charAt(i) == specialChar) {
+					throw e;
+				}
+			}
+		});
+	}
 
 	default void verifyGtFirstNumberValue(long value, int first, CustomArgumentException e) {
 		if (first >= value) {
@@ -47,7 +61,7 @@ public interface Validator<T> {
 			throw e;
 		}
 	}
-	
+
 	default void verifyIsImageFile(MultipartFile file, CustomArgumentException e) {
 		String name = file.getOriginalFilename();
 		int lastIndexOf = name.lastIndexOf(".");

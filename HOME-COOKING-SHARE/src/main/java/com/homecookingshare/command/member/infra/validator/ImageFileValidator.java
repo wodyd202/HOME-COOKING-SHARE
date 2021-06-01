@@ -1,11 +1,13 @@
 package com.homecookingshare.command.member.infra.validator;
 
+import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.homecookingshare.command.member.exception.InvalidImageFileException;
-import com.homecookingshare.command.member.service.MemberCommand.ChangeImageCommand;
+import com.homecookingshare.command.member.model.MemberCommand.ChangeImageCommand;
 import com.homecookingshare.common.Validator;
 
+@Component
 public class ImageFileValidator implements Validator<ChangeImageCommand> {
 
 	@Override

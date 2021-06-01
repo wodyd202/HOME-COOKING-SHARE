@@ -1,8 +1,8 @@
 package com.homecookingshare.command.member.service;
 
-import com.homecookingshare.command.member.service.MemberCommand.ChangeImageCommand;
-import com.homecookingshare.command.member.service.MemberCommand.ChangePasswordCommand;
-import com.homecookingshare.command.member.service.MemberCommand.RegisterMemberCommand;
+import com.homecookingshare.command.member.model.MemberCommand.ChangeImageCommand;
+import com.homecookingshare.command.member.model.MemberCommand.ChangePasswordCommand;
+import com.homecookingshare.command.member.model.MemberCommand.RegisterMemberCommand;
 import com.homecookingshare.common.Validator;
 import com.homecookingshare.common.fileUpload.FileUploader;
 import com.homecookingshare.domain.member.Email;

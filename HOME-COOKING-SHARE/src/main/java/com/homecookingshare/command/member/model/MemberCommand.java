@@ -1,4 +1,4 @@
-package com.homecookingshare.command.member.service;
+package com.homecookingshare.command.member.model;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,13 +16,6 @@ public class MemberCommand {
 		private String email;
 		private String password;
 		private String nickName;
-	}
-	
-	@Getter
-	@AllArgsConstructor
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class EmailAuthenticationCommand {
-		private String authNumber;
 	}
 	
 	@Getter

@@ -7,5 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CustomArgumentException extends IllegalArgumentException {
 	private static final long serialVersionUID = 1L;
-	protected String msg;
+	public CustomArgumentException(String msg) {
+		super(msg);
+	}
 }

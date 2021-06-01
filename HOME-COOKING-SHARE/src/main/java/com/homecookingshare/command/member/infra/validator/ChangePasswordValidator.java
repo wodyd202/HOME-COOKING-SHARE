@@ -1,10 +1,13 @@
-package com.homecookingshare.member;
+package com.homecookingshare.command.member.infra.validator;
+
+import org.springframework.stereotype.Component;
 
 import com.homecookingshare.command.member.exception.InvalidMemberException;
-import com.homecookingshare.command.member.service.MemberCommand.ChangePasswordCommand;
+import com.homecookingshare.command.member.model.MemberCommand.ChangePasswordCommand;
 import com.homecookingshare.common.Validator;
 
-public class ChangePasswordCommandValidator implements Validator<ChangePasswordCommand> {
+@Component
+public class ChangePasswordValidator implements Validator<ChangePasswordCommand> {
 
 	@Override
 	public void validate(ChangePasswordCommand obj) {
