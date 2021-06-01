@@ -1,5 +1,6 @@
 package com.homecookingshare.config.security.jwt.api;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import com.homecookingshare.config.security.jwt.JwtTokenProvider;
 import com.homecookingshare.config.security.jwt.TokenStore;
 import com.homecookingshare.config.security.jwt.exception.InvalidAccessTokenException;
 import com.homecookingshare.config.security.jwt.exception.InvalidRefreshTokenException;
+import com.homecookingshare.domain.member.MemberRule;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,7 +46,7 @@ public class JwtApi {
 		MemberPrincipal loginUser = (MemberPrincipal) userService.loadUserByUsername(refreshToken.getEmail());
 		return new ResponseEntity<>(createToken(loginUser), HttpStatus.OK);
 	}
-
+	
 	private boolean compareTo(RefreshTokenDto refreshToken, JwtToken jwtToken) {
 		return jwtToken.equalRefreshToken(refreshToken.getRefreshToken());
 	}
@@ -59,9 +61,11 @@ public class JwtApi {
 		if (!matchPassword(loginInfo, loginUser)) {
 			throw new InvalidAccessTokenException("이메일 혹은 비밀번호가 일치하지 않습니다.");
 		} 
+		if(!loginUser.isAccountNonLocked()) {
+			throw new InvalidAccessTokenException("인증이 필요한 계정입니다.");
+		}
 		return new ResponseEntity<>(createToken(loginUser), HttpStatus.OK);
 	}
-
 
 	private void validationAccessToken(AccessTokenDto loginInfo) {
 		assertNotEmptyStringValue(loginInfo.getEmail(), new InvalidRefreshTokenException("이메일 정보를 입력해주세요."));
@@ -89,5 +93,11 @@ public class JwtApi {
 	private JwtToken createToken(MemberPrincipal loginUser) {
 		return jwtTokenProvider.provideToken(loginUser.getUsername(), loginUser.getAuthorities().stream()
 				.map(c -> new String(c.getAuthority())).collect(Collectors.toList()));
+	}
+	
+	public JwtToken accessTokenWithoutPassword(
+			AccessTokenDto loginInfo
+		){
+		return jwtTokenProvider.provideToken(loginInfo.getEmail(), Arrays.asList(MemberRule.MEMBER.toString()));
 	}
 }

@@ -61,10 +61,13 @@ public class MemberEmailAuthKey extends AbstractAggregateRoot<MemberEmailAuthKey
 		
 		if(this.key.equals(command.getKey())) {
 			registerEvent(new AuthSuccessed(this.email));
+		}else {
+			throw new InvalidEmailAuthenticationException("인증키가 일치하지 않습니다.");
 		}
 	}
 
 	private boolean verifyOneDayPressed() {
-		return createDateTime.getTime() + 864000 < new Date().getTime();
+		final int ONE_DAY_TIMESTAMP = 864000000;
+		return createDateTime.getTime() + ONE_DAY_TIMESTAMP < new Date().getTime();
 	}
 }

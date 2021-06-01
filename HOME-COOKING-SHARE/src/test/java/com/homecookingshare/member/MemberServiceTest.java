@@ -17,9 +17,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.homecookingshare.command.member.exception.AlreadyDeletedMemberException;
 import com.homecookingshare.command.member.exception.AlreadyExistMemberException;
 import com.homecookingshare.command.member.infra.JpaMemberRepository;
-import com.homecookingshare.command.member.model.MemberCommand.ChangeImageCommand;
-import com.homecookingshare.command.member.model.MemberCommand.ChangePasswordCommand;
-import com.homecookingshare.command.member.model.MemberCommand.RegisterMemberCommand;
+import com.homecookingshare.command.member.model.MemberCommand.ChangeImage;
+import com.homecookingshare.command.member.model.MemberCommand.ChangePassword;
+import com.homecookingshare.command.member.model.MemberCommand.RegisterMember;
 import com.homecookingshare.command.member.service.MemberService;
 import com.homecookingshare.command.member.service.SimpleMemberService;
 import com.homecookingshare.common.Validator;
@@ -35,7 +35,7 @@ public class MemberServiceTest {
 	
 	@Test
 	void 사용자_등록() {
-		RegisterMemberCommand command = new RegisterMemberCommand("test@naver.com", "passwordPass", "nickName");
+		RegisterMember command = new RegisterMember("test@naver.com", "passwordPass", "nickName");
 		memberService.create(mock(Validator.class), command);
 		
 		verify(memberRepository,times(1))
@@ -44,7 +44,7 @@ public class MemberServiceTest {
 	
 	@Test
 	void 사용자_중복_실패() {
-		RegisterMemberCommand command = new RegisterMemberCommand("test@naver.com", "passwordPass", "nickName");
+		RegisterMember command = new RegisterMember("test@naver.com", "passwordPass", "nickName");
 
 		Member mockMember = mock(Member.class);
 		
@@ -58,7 +58,7 @@ public class MemberServiceTest {
 
 	@Test
 	void 이미_회원_탈퇴한_사람이_다시_가입하는_경우_실패() {
-		RegisterMemberCommand command = new RegisterMemberCommand("test@naver.com", "passwordPass", "nickName");
+		RegisterMember command = new RegisterMember("test@naver.com", "passwordPass", "nickName");
 		
 		Member mockMember = mock(Member.class);
 		when(mockMember.isDeleted())
@@ -76,7 +76,7 @@ public class MemberServiceTest {
 	void 사용자_이미지_변경() {
 		MultipartFile imageFile = new MockMultipartFile("fsdjkhfsd.jpg", new byte[] {});
 
-		ChangeImageCommand command = new ChangeImageCommand(imageFile);
+		ChangeImage command = new ChangeImage(imageFile);
 		
 		FileUploader mockFileUploader = mock(FileUploader.class);
 
@@ -91,7 +91,7 @@ public class MemberServiceTest {
 	
 	@Test
 	void 사용자_비밀번호_변경() {
-		ChangePasswordCommand command = new ChangePasswordCommand("originPassword", "changePassword");
+		ChangePassword command = new ChangePassword("originPassword", "changePassword");
 		
 		when(memberRepository.findById(new Email("test@naver.com")))
 			.thenReturn(Optional.of(mock(Member.class)));

@@ -3,21 +3,29 @@ package com.homecookingshare.query.member.projector;
 import java.util.Date;
 
 import org.springframework.context.event.EventListener;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.homecookingshare.domain.authKey.event.AuthSuccessed;
 import com.homecookingshare.domain.member.AuthType;
+import com.homecookingshare.domain.member.Email;
 import com.homecookingshare.domain.member.MemberRule;
 import com.homecookingshare.domain.member.MemberState;
+import com.homecookingshare.domain.member.event.ChangedMemberImage;
+import com.homecookingshare.domain.member.event.ChangedMemberPassword;
 import com.homecookingshare.domain.member.event.RegisterdMember;
 import com.homecookingshare.domain.member.read.Member;
 import com.homecookingshare.query.member.infra.MemberReadRepository;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
+@Async
 @Component
-@AllArgsConstructor
+@Transactional
+@RequiredArgsConstructor
 public class MemberProjector {
-	private MemberReadRepository memberReadRepository;
+	private final MemberReadRepository memberReadRepository;
 	
 	@EventListener
 	protected void on(RegisterdMember event) {
@@ -33,4 +41,26 @@ public class MemberProjector {
 				.build();
 		memberReadRepository.save(member);
 	}
+	
+	@EventListener
+	protected void on(AuthSuccessed event) {
+		Member member = memberReadRepository.findByEmail(new Email(event.getTargetEmail().getEmail())).get();
+		member.authSuccess();
+		memberReadRepository.save(member);
+	}
+	
+	@EventListener
+	protected void on(ChangedMemberImage event) {
+		Member member = memberReadRepository.findByEmail(event.getTargetUserEmail()).get();
+		member.changeImage(event.getImageName());
+		memberReadRepository.save(member);
+	}
+	
+	@EventListener
+	protected void on(ChangedMemberPassword event) {
+		Member member = memberReadRepository.findByEmail(event.getTargetUserEmail()).get();
+		member.changePassword(event.getChangePassword());
+		memberReadRepository.save(member);
+	}
+	
 }

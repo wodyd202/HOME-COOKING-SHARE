@@ -22,6 +22,7 @@ import com.homecookingshare.command.memberEmailAuth.model.MemberEmailAuthCommand
 import com.homecookingshare.command.memberEmailAuth.service.MemberEmailAuthService;
 import com.homecookingshare.command.memberEmailAuth.service.SimpleMemberEmailAuthService;
 import com.homecookingshare.common.Validator;
+import com.homecookingshare.common.mail.MailUtil;
 import com.homecookingshare.domain.authKey.MemberEmailAuthKey;
 import com.homecookingshare.domain.authKey.TargetEmail;
 import com.homecookingshare.domain.member.Email;
@@ -32,7 +33,7 @@ import com.homecookingshare.domain.member.event.RegisterdMember;
 public class MemberEmailAuthServiceTest {
 	JpaMemberRepository memberRepository = mock(JpaMemberRepository.class);
 	JpaMemberEmailAuthRepository repository = mock(JpaMemberEmailAuthRepository.class);
-	MemberEmailAuthService authService = new SimpleMemberEmailAuthService(memberRepository, repository);
+	MemberEmailAuthService authService = new SimpleMemberEmailAuthService(memberRepository, repository, mock(MailUtil.class));
 
 	@Test
 	void 사용자_인증_실패() {

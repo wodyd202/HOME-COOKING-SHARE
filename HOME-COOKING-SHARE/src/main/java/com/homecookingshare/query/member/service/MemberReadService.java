@@ -20,7 +20,7 @@ public class MemberReadService implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		Member findMember = memberReadRepository.findLoginInfoByEmail(new Email(username))
+		Member findMember = memberReadRepository.findByEmail(new Email(username))
 				.orElseThrow(()->new MemberNotFoundException("해당 이메일의 회원이 존재하지 않습니다."));
 		return new MemberPrincipal(findMember);
 	}

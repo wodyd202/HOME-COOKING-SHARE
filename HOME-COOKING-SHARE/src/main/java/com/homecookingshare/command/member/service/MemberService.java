@@ -1,8 +1,8 @@
 package com.homecookingshare.command.member.service;
 
-import com.homecookingshare.command.member.model.MemberCommand.ChangeImageCommand;
-import com.homecookingshare.command.member.model.MemberCommand.ChangePasswordCommand;
-import com.homecookingshare.command.member.model.MemberCommand.RegisterMemberCommand;
+import com.homecookingshare.command.member.model.MemberCommand.ChangeImage;
+import com.homecookingshare.command.member.model.MemberCommand.ChangePassword;
+import com.homecookingshare.command.member.model.MemberCommand.RegisterMember;
 import com.homecookingshare.common.Validator;
 import com.homecookingshare.common.fileUpload.FileUploader;
 import com.homecookingshare.domain.member.Email;
@@ -10,21 +10,21 @@ import com.homecookingshare.domain.member.Member;
 
 public interface MemberService {
 	Member create(
-			Validator<RegisterMemberCommand> validator, 
-			RegisterMemberCommand command
+			Validator<RegisterMember> validator, 
+			RegisterMember command
 		);
 	
 	Member changeImage(
 			FileUploader fileUploader,
-			Validator<ChangeImageCommand> validator,
+			Validator<ChangeImage> validator,
 			Email targetUserEmail,
-			ChangeImageCommand command
+			ChangeImage command
 		);
 
 	Member changePassword(
-			Validator<ChangePasswordCommand> validator, 
+			Validator<ChangePassword> validator, 
 			Email targetUserEmail, 
-			ChangePasswordCommand command
+			ChangePassword command
 		);
 
 }

@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.homecookingshare.domain.member.MemberState;
+import com.homecookingshare.domain.member.AuthType;
 import com.homecookingshare.domain.member.read.Member;
 
 import lombok.AllArgsConstructor;
@@ -41,7 +41,7 @@ public class MemberPrincipal implements UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return member.getState() == MemberState.CREATE;
+		return member.getAuthType() == AuthType.YES;
 	}
 
 	@Override

@@ -1,15 +1,10 @@
-package com.homecookingshare.command.member.api;
+package com.homecookingshare.command.member.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import com.homecookingshare.command.member.exception.AlreadyDeletedMemberException;
-import com.homecookingshare.command.member.exception.AlreadyExistMemberException;
-import com.homecookingshare.command.member.exception.InvalidImageFileException;
-import com.homecookingshare.command.member.exception.InvalidMemberException;
-import com.homecookingshare.command.member.exception.MemberNotFoundException;
 import com.homecookingshare.common.ErrorResponse;
 
 @RestControllerAdvice

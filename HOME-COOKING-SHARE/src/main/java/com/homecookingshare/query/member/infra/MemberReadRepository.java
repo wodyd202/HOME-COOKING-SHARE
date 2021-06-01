@@ -9,7 +9,7 @@ import com.homecookingshare.domain.member.read.Member;
 public interface MemberReadRepository {
 	void save(Member member);
 
-	Optional<Member> findLoginInfoByEmail(Email member);
+	Optional<Member> findByEmail(Email member);
 	
 	List<Member> findAll();
 }

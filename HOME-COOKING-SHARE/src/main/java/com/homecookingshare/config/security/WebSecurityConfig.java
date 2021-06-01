@@ -72,6 +72,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.formLogin().disable()
 		.authorizeRequests()
 		.antMatchers(HttpMethod.POST, "/api/v1/member").permitAll()
+		.antMatchers(HttpMethod.PUT, "/api/v1/member/**").authenticated()
+		.antMatchers(HttpMethod.GET, "/api/v1/member").permitAll()
 
 		.antMatchers(HttpMethod.POST, "/oauth/token").permitAll()
 		.antMatchers(HttpMethod.POST, "/oauth/refresh-token").permitAll()

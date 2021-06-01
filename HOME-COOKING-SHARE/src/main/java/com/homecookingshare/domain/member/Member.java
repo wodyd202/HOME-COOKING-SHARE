@@ -19,7 +19,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.domain.AbstractAggregateRoot;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.homecookingshare.command.member.model.MemberCommand.RegisterMemberCommand;
+import com.homecookingshare.command.member.model.MemberCommand.RegisterMember;
 import com.homecookingshare.domain.member.event.ChangedMemberImage;
 import com.homecookingshare.domain.member.event.ChangedMemberPassword;
 import com.homecookingshare.domain.member.event.RegisterdMember;
@@ -78,7 +78,7 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 		registerEvent(new RegisterdMember(this.email, this.password, this.profile));
 	}
 
-	public static Member create(PasswordEncoder passwordEncoder, RegisterMemberCommand command) {
+	public static Member create(PasswordEncoder passwordEncoder, RegisterMember command) {
 		Member member = new Member(command.getEmail(), command.getPassword(), command.getNickName());
 		member.password.encode(passwordEncoder);
 		return member;
@@ -88,7 +88,7 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 		return this.state == MemberState.DELETE;
 	}
 	
-	public boolean isNotAuth() {
+	public boolean isAlreadyAuth() {
 		return authType == AuthType.NO;
 	}
 
@@ -100,6 +100,10 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 	public void changePassword(PasswordEncoder encoder, String changePassword) {
 		this.password = new Password(encoder.encode(changePassword));
 		registerEvent(new ChangedMemberPassword(this.email, this.password));
+	}
+
+	public void authSuccess() {
+		this.authType = AuthType.YES;
 	}
 
 }

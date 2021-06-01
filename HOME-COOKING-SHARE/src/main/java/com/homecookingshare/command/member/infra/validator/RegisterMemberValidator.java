@@ -2,14 +2,14 @@ package com.homecookingshare.command.member.infra.validator;
 
 import org.springframework.stereotype.Component;
 
-import com.homecookingshare.command.member.model.MemberCommand.RegisterMemberCommand;
+import com.homecookingshare.command.member.model.MemberCommand.RegisterMember;
 import com.homecookingshare.common.Validator;
 
 @Component
-public class RegisterMemberValidator implements Validator<RegisterMemberCommand>, MemberValidator {
+public class RegisterMemberValidator implements Validator<RegisterMember>, MemberValidator {
 
 	@Override
-	public void validate(RegisterMemberCommand obj) {
+	public void validate(RegisterMember obj) {
 		String email = obj.getEmail();
 		String nickName = obj.getNickName();
 		String password = obj.getPassword();

@@ -12,7 +12,7 @@ public class MemberCommand {
 	@Getter
 	@AllArgsConstructor
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class RegisterMemberCommand {
+	public static class RegisterMember {
 		private String email;
 		private String password;
 		private String nickName;
@@ -21,14 +21,14 @@ public class MemberCommand {
 	@Getter
 	@AllArgsConstructor
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class ChangeImageCommand {
+	public static class ChangeImage {
 		private MultipartFile file;
 	}
 	
 	@Getter
 	@AllArgsConstructor
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class ChangePasswordCommand {
+	public static class ChangePassword {
 		private String originPassword;
 		private String changePassword;
 	}

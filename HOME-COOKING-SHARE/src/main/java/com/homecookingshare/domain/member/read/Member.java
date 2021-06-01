@@ -32,4 +32,16 @@ public class Member implements Serializable {
 	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date createDateTime;
+
+	public void authSuccess() {
+		this.authType = AuthType.YES;
+	}
+
+	public void changeImage(String imageName) {
+		this.profile.changeImage(imageName);
+	}
+
+	public void changePassword(Password password) {
+		this.password = password;
+	}
 }
