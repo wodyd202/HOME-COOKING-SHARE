@@ -13,7 +13,6 @@ import com.homecookingshare.command.member.exception.MemberNotFoundException;
 import com.homecookingshare.command.member.infra.JpaMemberRepository;
 import com.homecookingshare.command.member.service.MemberCommand.ChangeImageCommand;
 import com.homecookingshare.command.member.service.MemberCommand.ChangePasswordCommand;
-import com.homecookingshare.command.member.service.MemberCommand.EmailAuthenticationCommand;
 import com.homecookingshare.command.member.service.MemberCommand.RegisterMemberCommand;
 import com.homecookingshare.common.Validator;
 import com.homecookingshare.common.fileUpload.FileUploader;
@@ -42,20 +41,9 @@ public class SimpleMemberService implements MemberService {
 				throw new AlreadyExistMemberException("이미 해당 이메일로 가입된 회원이 존재합니다.");
 			}
 		}
-		Member member = Member.withRegisterMemberCommand(command);
-		member.encodePassword(passwordEncoder);
+		Member member = Member.create(passwordEncoder, command);
 		memberRepository.save(member);
 		return member;
-	}
-
-	@Override
-	public Member emailAuthentication(
-			Validator<EmailAuthenticationCommand> validator, 
-			Email authenticationTargetEmail,
-			EmailAuthenticationCommand command
-		) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -95,8 +83,7 @@ public class SimpleMemberService implements MemberService {
 		
 		verifyAuthenticateMember(findMember);
 		
-		findMember.changePassword(command.getChangePassword());
-		findMember.encodePassword(passwordEncoder);
+		findMember.changePassword(passwordEncoder, command.getChangePassword());
 		
 		return memberRepository.save(findMember);
 	}

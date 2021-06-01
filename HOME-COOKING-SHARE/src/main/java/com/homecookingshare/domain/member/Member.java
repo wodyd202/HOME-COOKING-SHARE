@@ -67,7 +67,7 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 		this.email = email;
 	}
 
-	private Member(String email, String password, String nickName) {
+	Member(String email, String password, String nickName) {
 		this.email = new Email(email);
 		this.password = new Password(password);
 		this.profile = new Profile(nickName);
@@ -75,16 +75,13 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 		this.authType = AuthType.NO;
 		this.state = MemberState.CREATE;
 		this.createDateTime = new Date();
-		registerEvent(new RegisterdMember(this));
+		registerEvent(new RegisterdMember(this.email, this.password, this.profile));
 	}
 
-	public static Member withRegisterMemberCommand(RegisterMemberCommand command) {
+	public static Member create(PasswordEncoder passwordEncoder, RegisterMemberCommand command) {
 		Member member = new Member(command.getEmail(), command.getPassword(), command.getNickName());
+		member.password.encode(passwordEncoder);
 		return member;
-	}
-
-	public void encodePassword(PasswordEncoder passwordEncoder) {
-		this.password.encode(passwordEncoder);
 	}
 	
 	public boolean isDeleted() {
@@ -100,8 +97,8 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 		registerEvent(new ChangedMemberImage(this.email, saveFileName));
 	}
 
-	public void changePassword(String changePassword) {
-		this.password = new Password(changePassword);
+	public void changePassword(PasswordEncoder encoder, String changePassword) {
+		this.password = new Password(encoder.encode(changePassword));
 		registerEvent(new ChangedMemberPassword(this.email, this.password));
 	}
 
