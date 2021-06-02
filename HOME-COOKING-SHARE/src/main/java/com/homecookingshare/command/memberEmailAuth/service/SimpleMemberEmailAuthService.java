@@ -55,7 +55,7 @@ public class SimpleMemberEmailAuthService implements MemberEmailAuthService {
 		Member findMember = jpaMemberRepository.findById(new Email(command.getRequireVerificationTargetEmail())).orElseThrow(()->
 			new MemberNotFoundException("해당 이메일의 회원이 존재하지 않습니다.")
 		);
-		if(!findMember.isAlreadyAuth()) {
+		if(findMember.isAlreadyAuth()) {
 			throw new InvalidEmailAuthenticationException("이미 이메일 인증한 회원입니다.");
 		}
 		MemberEmailAuthKey memberEmailAuthKey = jpaMemberEmailAuthRepository.findTop1ByEmailOrderBySeqDesc(new TargetEmail(command.getRequireVerificationTargetEmail())).get();

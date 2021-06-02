@@ -89,7 +89,7 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 	}
 	
 	public boolean isAlreadyAuth() {
-		return authType == AuthType.NO;
+		return authType == AuthType.YES;
 	}
 
 	public void changeImage(String saveFileName) {

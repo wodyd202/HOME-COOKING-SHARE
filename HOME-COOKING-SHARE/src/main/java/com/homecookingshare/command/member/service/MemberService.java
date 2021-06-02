@@ -5,6 +5,7 @@ import com.homecookingshare.command.member.model.MemberCommand.ChangePassword;
 import com.homecookingshare.command.member.model.MemberCommand.RegisterMember;
 import com.homecookingshare.common.Validator;
 import com.homecookingshare.common.fileUpload.FileUploader;
+import com.homecookingshare.domain.authKey.event.AuthSuccessed;
 import com.homecookingshare.domain.member.Email;
 import com.homecookingshare.domain.member.Member;
 
@@ -26,5 +27,8 @@ public interface MemberService {
 			Email targetUserEmail, 
 			ChangePassword command
 		);
-
+	
+	void authSuccess(
+			AuthSuccessed event
+		);
 }

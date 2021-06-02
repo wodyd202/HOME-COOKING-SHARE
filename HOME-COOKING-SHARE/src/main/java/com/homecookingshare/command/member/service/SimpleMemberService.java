@@ -95,6 +95,7 @@ public class SimpleMemberService implements MemberService {
 	}
 	
 	@EventListener
+	@Override
 	public void authSuccess(AuthSuccessed event) {
 		Member member = memberRepository.findById(new Email(event.getTargetEmail().getEmail())).get();
 		member.authSuccess();

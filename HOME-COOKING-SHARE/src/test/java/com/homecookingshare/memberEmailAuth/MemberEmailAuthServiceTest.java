@@ -37,8 +37,9 @@ public class MemberEmailAuthServiceTest {
 
 	@Test
 	void 사용자_인증_실패() {
-		when(memberRepository.existsById(any(Email.class)))
-			.thenReturn(true);
+		when(memberRepository.findById(any(Email.class)))
+			.thenReturn(Optional.of(mock(Member.class)));
+		
 		MemberEmailAuthKey mockAuthKey = mock(MemberEmailAuthKey.class);
 		doThrow(InvalidEmailAuthenticationException.class)
 		.when(mockAuthKey)
@@ -55,8 +56,13 @@ public class MemberEmailAuthServiceTest {
 	
 	@Test
 	void 사용자_정상_인증() {
-		when(memberRepository.existsById(any(Email.class)))
-			.thenReturn(true);
+		Member mockMember = mock(Member.class);
+		
+		when(mockMember.isAlreadyAuth())
+			.thenReturn(false);
+		
+		when(memberRepository.findById(any(Email.class)))
+			.thenReturn(Optional.of(mockMember));
 		
 		MemberEmailAuthKey mockAuthKey = mock(MemberEmailAuthKey.class);
 		assertDoesNotThrow(()->{

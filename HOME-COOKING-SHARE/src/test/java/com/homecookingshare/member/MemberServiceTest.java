@@ -11,6 +11,7 @@ import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,12 +27,14 @@ import com.homecookingshare.common.Validator;
 import com.homecookingshare.common.fileUpload.FileUploader;
 import com.homecookingshare.domain.member.Email;
 import com.homecookingshare.domain.member.Member;
+import com.homecookingshare.domain.member.Password;
 
 @SuppressWarnings("unchecked")
 public class MemberServiceTest {
 	
+	PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	JpaMemberRepository memberRepository = mock(JpaMemberRepository.class);
-	MemberService memberService = new SimpleMemberService(mock(PasswordEncoder.class), memberRepository);
+	MemberService memberService = new SimpleMemberService(passwordEncoder, memberRepository);
 	
 	@Test
 	void 사용자_등록() {
@@ -74,7 +77,7 @@ public class MemberServiceTest {
 	
 	@Test
 	void 사용자_이미지_변경() {
-		MultipartFile imageFile = new MockMultipartFile("fsdjkhfsd.jpg", new byte[] {});
+		MultipartFile imageFile = new MockMultipartFile("fsdjkhfsd.jpg","fsdjkhfsd.jpg","", new byte[] {});
 
 		ChangeImage command = new ChangeImage(imageFile);
 		
@@ -93,8 +96,12 @@ public class MemberServiceTest {
 	void 사용자_비밀번호_변경() {
 		ChangePassword command = new ChangePassword("originPassword", "changePassword");
 		
+		Member mockMember = mock(Member.class);
+		when(mockMember.getPassword())
+			.thenReturn(new Password(passwordEncoder.encode("originPassword")));
+		
 		when(memberRepository.findById(new Email("test@naver.com")))
-			.thenReturn(Optional.of(mock(Member.class)));
+			.thenReturn(Optional.of(mockMember));
 		
 		memberService.changePassword(mock(Validator.class), new Email("test@naver.com"), command);
 	}

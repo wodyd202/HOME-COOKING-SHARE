@@ -13,13 +13,11 @@ public interface Validator<T> {
 	void validate(T obj);
 
 	default void verifyContainUnAllowedSpecialChar(String value, CustomArgumentException e) {
-		NOT_ALLOWED_SPECIAL_CHAR.forEach(specialChar -> {
-			for (int i = 0; i < value.length(); i++) {
-				if(value.charAt(i) == specialChar) {
-					throw e;
-				}
+		for (int i = 0; i < value.length(); i++) {
+			if(NOT_ALLOWED_SPECIAL_CHAR.contains(value.charAt(i))) {
+				throw e;
 			}
-		});
+		}
 	}
 
 	default void verifyGtFirstNumberValue(long value, int first, CustomArgumentException e) {
@@ -69,5 +67,11 @@ public interface Validator<T> {
 		if (!extention.equals(".JPG") && !extention.equals(".JPEG") && !extention.equals(".PNG")) {
 			throw e;
 		}
+	}
+
+	default void verifyLengthBetweenFirstAndSecond(String value, int first, int second, CustomArgumentException e) {
+		int length = value.length();
+		if(length >= first && length <= second) {return;}
+		throw e;
 	}
 }
