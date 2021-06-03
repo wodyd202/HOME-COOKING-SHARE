@@ -57,7 +57,8 @@ public class SwaggerConfig {
             		Predicates.or(
         				RequestHandlerSelectors.basePackage("com.homecookingshare.config.security.jwt.api"),
         				RequestHandlerSelectors.basePackage("com.homecookingshare.command.member.api"),
-        				RequestHandlerSelectors.basePackage("com.homecookingshare.command.memberEmailAuth.api")
+        				RequestHandlerSelectors.basePackage("com.homecookingshare.command.memberEmailAuth.api"),
+        				RequestHandlerSelectors.basePackage("com.homecookingshare.command.recipe.api")
 					)
         		)
                 .paths(PathSelectors.ant("/**"))

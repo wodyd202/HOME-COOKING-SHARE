@@ -73,15 +73,18 @@ public class RedisRecipeReadRepository implements RecipeReadRepository{
 	@Override
 	public Optional<Recipe> findByRecipeId(RecipeId targetId) {
 		SetOperations setOperations = template.opsForSet();
-		if(!setOperations.isMember(RECIPE_LIST_KEY, targetId.getRecipeId())) {
+		
+		if(notExistRecipe(setOperations, targetId)) {
 			return Optional.ofNullable(null);
 		}
+		
 		String id = targetId.getRecipeId();
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
 		HashOperations hashOperations = template.opsForHash();
 		try {
 		Recipe recipe = Recipe.builder()
+				.id(targetId)
 				.cooker(new Cooker(hashOperations.get(RECIPE_KEY + id, "cooker").toString()))
 				.title(new RecipeTitle(hashOperations.get(RECIPE_KEY + id, "title").toString()))
 				.mainImage(new RecipeMainImage(hashOperations.get(RECIPE_KEY + id, "mainImage").toString()))
@@ -100,4 +103,12 @@ public class RedisRecipeReadRepository implements RecipeReadRepository{
 		}
 	}
 
+	private boolean notExistRecipe(SetOperations setOperations, RecipeId targetId) {
+		Boolean existRecipeIntoKorean = setOperations.isMember(RECIPE_LIST_KEY + RecipeCategory.Korean.toString(), targetId.getRecipeId());
+		Boolean existRecipeIntoChinese = setOperations.isMember(RECIPE_LIST_KEY + RecipeCategory.Chinese.toString(), targetId.getRecipeId());
+		Boolean existRecipeIntoJapanese = setOperations.isMember(RECIPE_LIST_KEY + RecipeCategory.Japanese.toString(), targetId.getRecipeId());
+		Boolean existRecipeIntoWestern = setOperations.isMember(RECIPE_LIST_KEY + RecipeCategory.Western.toString(), targetId.getRecipeId());
+		
+		return !existRecipeIntoKorean && !existRecipeIntoJapanese && !existRecipeIntoChinese && !existRecipeIntoWestern;
+	}
 }

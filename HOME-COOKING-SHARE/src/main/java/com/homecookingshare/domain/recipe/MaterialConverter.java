@@ -1,6 +1,8 @@
 package com.homecookingshare.domain.recipe;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.persistence.AttributeConverter;
@@ -14,9 +16,9 @@ import lombok.AllArgsConstructor;
 
 @Component
 @AllArgsConstructor
-public class MaterialConverter implements AttributeConverter<List<Material>, String>{
+public class MaterialConverter implements AttributeConverter<List<Material>, String> {
 	private ObjectMapper objectMapper;
-	
+
 	@Override
 	public String convertToDatabaseColumn(List<Material> attribute) {
 		try {
@@ -30,7 +32,12 @@ public class MaterialConverter implements AttributeConverter<List<Material>, Str
 	@SuppressWarnings("unchecked")
 	public List<Material> convertToEntityAttribute(String dbData) {
 		try {
-			return objectMapper.readValue(dbData, List.class);
+			List<LinkedHashMap<String, String>> readValue = objectMapper.readValue(dbData, ArrayList.class);
+			List<Material> result = new ArrayList<>();
+			readValue.forEach(val -> {
+				result.add(new Material(val.get("name"), val.get("capacity")));
+			});
+			return result;
 		} catch (IOException e) {
 			throw new IllegalArgumentException();
 		}

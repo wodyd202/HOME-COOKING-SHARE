@@ -6,7 +6,7 @@ import com.homecookingshare.command.recipe.exception.InvalidRecipeException;
 import com.homecookingshare.command.recipe.model.RecipeCommand.RemoveMakeProcess;
 
 @Component
-public class RemovedMakeProcessValidator extends AbstractRecipeValidator<RemoveMakeProcess>{
+public class RemoveMakeProcessValidator extends AbstractRecipeValidator<RemoveMakeProcess>{
 
 	@Override
 	public void validate(RemoveMakeProcess obj) {

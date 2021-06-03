@@ -22,7 +22,7 @@ import com.homecookingshare.command.recipe.infra.validator.ChangeMainImageValida
 import com.homecookingshare.command.recipe.infra.validator.ChangeServingValidator;
 import com.homecookingshare.command.recipe.infra.validator.ChangeTitleValidator;
 import com.homecookingshare.command.recipe.infra.validator.RemoveMaterialValidator;
-import com.homecookingshare.command.recipe.infra.validator.RemovedMakeProcessValidator;
+import com.homecookingshare.command.recipe.infra.validator.RemoveMakeProcessValidator;
 import com.homecookingshare.command.recipe.model.RecipeCommand;
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMakeProcess;
 import com.homecookingshare.command.recipe.service.RecipeService;
@@ -95,9 +95,9 @@ public class RecipeServiceTest {
 	
 	@Test
 	void 조리과정_삭제() {
-		Validator<RecipeCommand.RemoveMakeProcess> validator = new RemovedMakeProcessValidator();
+		Validator<RecipeCommand.RemoveMakeProcess> validator = new RemoveMakeProcessValidator();
 		RecipeCommand.RemoveMakeProcess command = new RecipeCommand.RemoveMakeProcess(1);
-		recipeService.removedMakeProcess(validator, targetRecipeId, command, mockCooker);
+		recipeService.removeMakeProcess(validator, targetRecipeId, command, mockCooker);
 	}
 	
 	@Test
@@ -128,28 +128,7 @@ public class RecipeServiceTest {
 	void 레시피_등록() {
 		Validator validator = mock(Validator.class);
 		FileUploader fileUploader = mock(FileUploader.class);
-		
-		RecipeCommand.AddMaterial addedMaterial_1 = new RecipeCommand.AddMaterial(
-				"재료명","용량"
-				);
-		RecipeCommand.AddMaterial addedMaterial_2 = new RecipeCommand.AddMaterial(
-				"재료명","용량"
-				);
-		RecipeCommand.AddMakeProcess addedMakeProcess_1 = new RecipeCommand.AddMakeProcess(
-				new MockMultipartFile("이름.jpg","이름.jpg","" ,new byte [] {}),
-				"내용",
-				0
-				);
-		RecipeCommand.AddMakeProcess addedMakeProcess_2 = new RecipeCommand.AddMakeProcess(
-				new MockMultipartFile("이름.jpg","이름.jpg","" ,new byte [] {}),
-				"내용",
-				1
-				);
-		RecipeCommand.AddMakeProcess addedMakeProcess_3 = new RecipeCommand.AddMakeProcess(
-				new MockMultipartFile("이름.jpg","이름.jpg","" ,new byte [] {}),
-				"내용",
-				2
-				);
+
 		RecipeCommand.RegisterRecipe command = new RecipeCommand.RegisterRecipe(
 					"타이틀",
 					new MockMultipartFile("file.jpg", "file.jpg","",new byte[] {}),
@@ -157,8 +136,11 @@ public class RecipeServiceTest {
 					Level.FOUR,
 					Serving.FIVE,
 					60000,
-					Arrays.asList(addedMaterial_1,addedMaterial_2),
-					Arrays.asList(addedMakeProcess_1,addedMakeProcess_2,addedMakeProcess_3)
+					Arrays.asList("재료명"),
+					Arrays.asList("용량"),
+					Arrays.asList(new MockMultipartFile("이름.jpg","이름.jpg","" ,new byte [] {})),
+					Arrays.asList("내용"),
+					Arrays.asList(1)
 				);
 		
 		recipeService.create(validator, fileUploader, command, new Cooker("test@naver.com"));

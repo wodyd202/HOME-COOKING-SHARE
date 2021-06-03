@@ -2,6 +2,8 @@ package com.homecookingshare.domain.recipe;
 
 import java.io.Serializable;
 
+import com.homecookingshare.domain.member.read.Member;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -19,5 +21,9 @@ public class Cooker implements Serializable {
 	public boolean isMyRecipe(Recipe findRecipe) {
 		return this.equals(findRecipe.getCooker());
 	}
-
+	
+	public static Cooker of(Member member) {
+		return new Cooker(member.getEmail().getValue());
+	}
+	
 }

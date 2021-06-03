@@ -23,14 +23,14 @@ public interface RecipeService {
 			Cooker cooker
 		);
 
-	void changeTitle(
+	Recipe changeTitle(
 			Validator<RecipeCommand.ChangeTitle> validator, 
 			RecipeId targetRecipeId, 
 			ChangeTitle command,
 			Cooker recipeOwner
 		);
 
-	void addMakeProcess(
+	Recipe addMakeProcess(
 			Validator<RecipeCommand.AddMakeProcess> validator, 
 			FileUploader fileUploader,
 			RecipeId targetRecipeId, 
@@ -38,21 +38,21 @@ public interface RecipeService {
 			Cooker recipeOwner
 		);
 
-	void removedMakeProcess(
+	Recipe removeMakeProcess(
 			Validator<RecipeCommand.RemoveMakeProcess> validator, 
 			RecipeId targetRecipeId, 
 			RemoveMakeProcess command, 
 			Cooker recipeOwner
 		);
 
-	void changeLevel(
+	Recipe changeLevel(
 			Validator<RecipeCommand.ChangeLevel> validator, 
 			RecipeId targetRecipeId, 
 			ChangeLevel command, 
 			Cooker recipeOwner
 		);
 
-	void changeMainImage(
+	Recipe changeMainImage(
 			Validator<ChangeMainImage> validator,
 			FileUploader fileUploader,
 			RecipeId targetRecipeId, 
@@ -60,21 +60,21 @@ public interface RecipeService {
 			Cooker recipeOwner
 		);
 
-	void addMaterial(
+	Recipe addMaterial(
 			Validator<AddMaterial> validator, 
 			RecipeId targetRecipeId, 
 			AddMaterial command, 
 			Cooker recipeOwner
 		);
 
-	void removeMaterial(
+	Recipe removeMaterial(
 			Validator<RemoveMaterial> validator, 
 			RecipeId targetRecipeId, 
 			RemoveMaterial command,
 			Cooker recipeOwner
 		);
 
-	void changeServing(
+	Recipe changeServing(
 			Validator<ChangeServing> validator, 
 			RecipeId targetRecipeId, 
 			ChangeServing command,

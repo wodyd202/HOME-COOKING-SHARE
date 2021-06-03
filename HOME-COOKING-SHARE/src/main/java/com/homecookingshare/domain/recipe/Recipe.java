@@ -89,9 +89,13 @@ public class Recipe extends AbstractAggregateRoot<Recipe> {
 		this.serving = command.getServing();
 		this.level = command.getLevel();
 		this.time = new MakingTime(command.getMakingTime());
+
+		this.makeProcess = new MakeProcesses();
+		command.getMakeProcesses().forEach(makeProcess->{
+			this.makeProcess.add(new MakeProcess(makeProcess));
+		});
 		
 		this.materials = new Materials(command.getMaterials().stream().map(Material::new).collect(Collectors.toList()));
-		this.makeProcess = new MakeProcesses(command.getMakeProcesses().stream().map(MakeProcess::new).collect(Collectors.toList()));
 		
 		this.mainImage = new RecipeMainImage(command.getMainImage());
 		this.createDateTime = new Date();

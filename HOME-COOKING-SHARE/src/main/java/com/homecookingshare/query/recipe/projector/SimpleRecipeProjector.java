@@ -41,6 +41,7 @@ public class SimpleRecipeProjector implements RecipeProjector{
 				.time(event.getTime())
 				.materials(event.getMaterials())
 				.makeProcess(event.getMakeProcess())
+				.createDateTime(event.getCreateDateTime())
 				.build();
 		recipeRepository.save(recipe);
 	}

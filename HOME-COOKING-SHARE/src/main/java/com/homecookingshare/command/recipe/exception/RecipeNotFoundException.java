@@ -1,4 +1,4 @@
-package com.homecookingshare.command.recipe.service;
+package com.homecookingshare.command.recipe.exception;
 
 import com.homecookingshare.common.CustomArgumentException;
 

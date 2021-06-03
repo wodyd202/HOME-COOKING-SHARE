@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.homecookingshare.command.member.exception.MemberNotFoundException;
 import com.homecookingshare.command.member.infra.JpaMemberRepository;
 import com.homecookingshare.command.recipe.exception.InvalidRecipeException;
+import com.homecookingshare.command.recipe.exception.RecipeNotFoundException;
 import com.homecookingshare.command.recipe.infra.JpaRecipeRepository;
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMakeProcess;
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMaterial;
@@ -45,9 +46,17 @@ public class SimpleRecipeService implements RecipeService {
 			.orElseThrow(()->new MemberNotFoundException("해당 회원이 존재하지 않습니다."));
 		Recipe recipe = Recipe.create(command, cooker);
 		
+		uploadRecipeImages(fileUploader, command, recipe);
+		jpaRecipeRepository.save(recipe);
+		return recipe;
+	}
+
+	private void uploadRecipeImages(FileUploader fileUploader, RegisterRecipe command, Recipe recipe) {
 		List<MakeProcess> realMakeProcesses = recipe.getMakeProcess().getMakeProcess();
 		List<AddMakeProcess> makeProcesses = command.getMakeProcesses();
 		int makeProccessesCount = command.getMakeProcesses().size();
+
+		fileUploader.uploadFile(command.getMainImage(), recipe.getMainImage().getPath());
 		
 		for(int i =0; i < makeProccessesCount; i++) {
 			fileUploader.uploadFile(
@@ -55,13 +64,10 @@ public class SimpleRecipeService implements RecipeService {
 					realMakeProcesses.get(i).getImagePath()
 				);
 		}
-		
-		jpaRecipeRepository.save(recipe);
-		return recipe;
 	}
 
 	@Override
-	public void changeTitle(
+	public Recipe changeTitle(
 			Validator<ChangeTitle> validator, 
 			RecipeId targetRecipeId, 
 			ChangeTitle command,
@@ -75,10 +81,11 @@ public class SimpleRecipeService implements RecipeService {
 		}
 		findRecipe.changeTitle(command.getTitle());
 		jpaRecipeRepository.save(findRecipe);
+		return findRecipe;
 	}
 
 	@Override
-	public void addMakeProcess(
+	public Recipe addMakeProcess(
 			Validator<AddMakeProcess> validator, 
 			FileUploader fileUploader,
 			RecipeId targetRecipeId, 
@@ -94,10 +101,11 @@ public class SimpleRecipeService implements RecipeService {
 		MakeProcess makeProcess = findRecipe.addMakeProcess(command);
 		fileUploader.uploadFile(command.getFile(), makeProcess.getImagePath());
 		jpaRecipeRepository.save(findRecipe);
+		return findRecipe;
 	}
 
 	@Override
-	public void removedMakeProcess(
+	public Recipe removeMakeProcess(
 			Validator<RemoveMakeProcess> validator, 
 			RecipeId targetRecipeId,
 			RemoveMakeProcess command, 
@@ -111,10 +119,11 @@ public class SimpleRecipeService implements RecipeService {
 		}
 		findRecipe.removeMakeProccess(command);
 		jpaRecipeRepository.save(findRecipe);
+		return findRecipe;
 	}
 
 	@Override
-	public void changeLevel(
+	public Recipe changeLevel(
 			Validator<ChangeLevel> validator, 
 			RecipeId targetRecipeId, 
 			ChangeLevel command,
@@ -128,10 +137,11 @@ public class SimpleRecipeService implements RecipeService {
 		}
 		findRecipe.changeLevel(command);
 		jpaRecipeRepository.save(findRecipe);
+		return findRecipe;
 	}
 
 	@Override
-	public void changeMainImage(
+	public Recipe changeMainImage(
 			Validator<ChangeMainImage> validator, 
 			FileUploader fileUploader,
 			RecipeId targetRecipeId, 
@@ -147,10 +157,11 @@ public class SimpleRecipeService implements RecipeService {
 		findRecipe.changeMainImage(command);
 		fileUploader.uploadFile(command.getFile(), findRecipe.getMainImage().getPath());
 		jpaRecipeRepository.save(findRecipe);
+		return findRecipe;
 	}
 
 	@Override
-	public void addMaterial(
+	public Recipe addMaterial(
 			Validator<AddMaterial> validator, 
 			RecipeId targetRecipeId, 
 			AddMaterial command,
@@ -164,10 +175,11 @@ public class SimpleRecipeService implements RecipeService {
 		}
 		findRecipe.addMaterial(command);
 		jpaRecipeRepository.save(findRecipe);
+		return findRecipe;
 	}
 
 	@Override
-	public void removeMaterial(
+	public Recipe removeMaterial(
 			Validator<RemoveMaterial> validator, 
 			RecipeId targetRecipeId, 
 			RemoveMaterial command,
@@ -181,10 +193,11 @@ public class SimpleRecipeService implements RecipeService {
 		}
 		findRecipe.removeMaterial(command);
 		jpaRecipeRepository.save(findRecipe);
+		return findRecipe;
 	}
 
 	@Override
-	public void changeServing(
+	public Recipe changeServing(
 			Validator<ChangeServing> validator, 
 			RecipeId targetRecipeId, 
 			ChangeServing command,
@@ -198,5 +211,6 @@ public class SimpleRecipeService implements RecipeService {
 		}
 		findRecipe.changeServing(command);
 		jpaRecipeRepository.save(findRecipe);
+		return findRecipe;
 	}
 }
