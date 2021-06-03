@@ -1,9 +1,11 @@
-package com.homecookingshare.recipe;
+package com.homecookingshare.command.recipe.infra.validator;
 
-import com.homecookingshare.command.recipe.infra.validator.AbstractRecipeValidator;
+import org.springframework.stereotype.Component;
+
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMaterial;
 import com.homecookingshare.command.recipe.model.RecipeCommand.RemoveMaterial;
 
+@Component
 public class RemoveMaterialValidator extends AbstractRecipeValidator<RemoveMaterial> {
 
 	@Override

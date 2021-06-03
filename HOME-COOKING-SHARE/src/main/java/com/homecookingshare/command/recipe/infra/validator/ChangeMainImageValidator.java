@@ -1,8 +1,10 @@
-package com.homecookingshare.recipe;
+package com.homecookingshare.command.recipe.infra.validator;
 
-import com.homecookingshare.command.recipe.infra.validator.AbstractRecipeValidator;
+import org.springframework.stereotype.Component;
+
 import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeMainImage;
 
+@Component
 public class ChangeMainImageValidator extends AbstractRecipeValidator<ChangeMainImage>{
 
 	@Override

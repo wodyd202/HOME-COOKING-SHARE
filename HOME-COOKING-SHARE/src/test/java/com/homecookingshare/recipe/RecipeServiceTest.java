@@ -15,7 +15,16 @@ import org.springframework.mock.web.MockMultipartFile;
 
 import com.homecookingshare.command.member.infra.JpaMemberRepository;
 import com.homecookingshare.command.recipe.infra.JpaRecipeRepository;
+import com.homecookingshare.command.recipe.infra.validator.AddMakeProcessValidator;
+import com.homecookingshare.command.recipe.infra.validator.AddMaterialValidator;
+import com.homecookingshare.command.recipe.infra.validator.ChangeLevelValidator;
+import com.homecookingshare.command.recipe.infra.validator.ChangeMainImageValidator;
+import com.homecookingshare.command.recipe.infra.validator.ChangeServingValidator;
+import com.homecookingshare.command.recipe.infra.validator.ChangeTitleValidator;
+import com.homecookingshare.command.recipe.infra.validator.RemoveMaterialValidator;
+import com.homecookingshare.command.recipe.infra.validator.RemovedMakeProcessValidator;
 import com.homecookingshare.command.recipe.model.RecipeCommand;
+import com.homecookingshare.command.recipe.model.RecipeCommand.AddMakeProcess;
 import com.homecookingshare.command.recipe.service.RecipeService;
 import com.homecookingshare.command.recipe.service.SimpleRecipeService;
 import com.homecookingshare.common.Validator;
@@ -79,19 +88,21 @@ public class RecipeServiceTest {
 	
 	@Test
 	void 난이도_변경() {
+		Validator<RecipeCommand.ChangeLevel> validator = new ChangeLevelValidator();
 		RecipeCommand.ChangeLevel command = new RecipeCommand.ChangeLevel(Level.FOUR);
-		recipeService.changeLevel(mock(Validator.class), targetRecipeId, command, mockCooker);
+		recipeService.changeLevel(validator, targetRecipeId, command, mockCooker);
 	}
 	
 	@Test
 	void 조리과정_삭제() {
+		Validator<RecipeCommand.RemoveMakeProcess> validator = new RemovedMakeProcessValidator();
 		RecipeCommand.RemoveMakeProcess command = new RecipeCommand.RemoveMakeProcess(1);
-		recipeService.removedMakeProcess(mock(Validator.class), targetRecipeId, command, mockCooker);
+		recipeService.removedMakeProcess(validator, targetRecipeId, command, mockCooker);
 	}
 	
 	@Test
 	void 조리과정_추가() {
-		Validator validator = mock(Validator.class);
+		Validator<AddMakeProcess> validator = new AddMakeProcessValidator();
 		
 		RecipeCommand.AddMakeProcess command = new RecipeCommand.AddMakeProcess(
 				new MockMultipartFile("파일.jpg","파일.jpg","",new byte[] {}), "삽입할 내용", 0);
@@ -104,7 +115,7 @@ public class RecipeServiceTest {
 	
 	@Test
 	void 레시피_타이틀_수정() {
-		Validator validator = mock(Validator.class);
+		Validator<RecipeCommand.ChangeTitle> validator = new ChangeTitleValidator();
 
 		RecipeCommand.ChangeTitle command = new RecipeCommand.ChangeTitle("타이틀 수정");
 		recipeService.changeTitle(validator, targetRecipeId,command, mockCooker);

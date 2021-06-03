@@ -6,6 +6,7 @@ import com.homecookingshare.command.recipe.exception.InvalidRecipeException;
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMakeProcess;
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMaterial;
 import com.homecookingshare.common.Validator;
+import com.homecookingshare.domain.recipe.Recipe.Level;
 import com.homecookingshare.domain.recipe.Recipe.Serving;
 
 public abstract class AbstractRecipeValidator<T> implements Validator<T> {
@@ -46,5 +47,9 @@ public abstract class AbstractRecipeValidator<T> implements Validator<T> {
 	
 	protected void servingValidation(Serving serving) {
 		verifyNotNullObject(serving, new InvalidRecipeException("레시피 인분을 입력해주세요."));
+	}
+	
+	protected void levelValidation(Level level) {
+		verifyNotNullObject(level, new InvalidRecipeException("레시피 난이도를 입력해주세요."));
 	}
 }
