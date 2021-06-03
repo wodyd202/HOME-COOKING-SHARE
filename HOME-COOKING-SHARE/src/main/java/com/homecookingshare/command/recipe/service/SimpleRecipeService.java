@@ -9,10 +9,14 @@ import com.homecookingshare.command.member.infra.JpaMemberRepository;
 import com.homecookingshare.command.recipe.exception.InvalidRecipeException;
 import com.homecookingshare.command.recipe.infra.JpaRecipeRepository;
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMakeProcess;
+import com.homecookingshare.command.recipe.model.RecipeCommand.AddMaterial;
 import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeLevel;
+import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeMainImage;
+import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeServing;
 import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeTitle;
 import com.homecookingshare.command.recipe.model.RecipeCommand.RegisterRecipe;
 import com.homecookingshare.command.recipe.model.RecipeCommand.RemoveMakeProcess;
+import com.homecookingshare.command.recipe.model.RecipeCommand.RemoveMaterial;
 import com.homecookingshare.common.Validator;
 import com.homecookingshare.common.fileUpload.FileUploader;
 import com.homecookingshare.domain.member.Email;
@@ -123,6 +127,76 @@ public class SimpleRecipeService implements RecipeService {
 			throw new InvalidRecipeException("자신의 레시피만 수정할 수 있습니다.");
 		}
 		findRecipe.changeLevel(command);
+		jpaRecipeRepository.save(findRecipe);
+	}
+
+	@Override
+	public void changeMainImage(
+			Validator<ChangeMainImage> validator, 
+			FileUploader fileUploader,
+			RecipeId targetRecipeId, 
+			ChangeMainImage command, 
+			Cooker recipeOwner
+		) {
+		validator.validate(command);
+		Recipe findRecipe = jpaRecipeRepository.findById(targetRecipeId)
+				.orElseThrow(()->new RecipeNotFoundException("해당 레시피가 존재하지 않습니다."));
+		if(!recipeOwner.isMyRecipe(findRecipe)) {
+			throw new InvalidRecipeException("자신의 레시피만 수정할 수 있습니다.");
+		}
+		findRecipe.changeMainImage(command);
+		fileUploader.uploadFile(command.getFile(), findRecipe.getMainImage().getPath());
+		jpaRecipeRepository.save(findRecipe);
+	}
+
+	@Override
+	public void addMaterial(
+			Validator<AddMaterial> validator, 
+			RecipeId targetRecipeId, 
+			AddMaterial command,
+			Cooker recipeOwner
+		) {
+		validator.validate(command);
+		Recipe findRecipe = jpaRecipeRepository.findById(targetRecipeId)
+				.orElseThrow(()->new RecipeNotFoundException("해당 레시피가 존재하지 않습니다."));
+		if(!recipeOwner.isMyRecipe(findRecipe)) {
+			throw new InvalidRecipeException("자신의 레시피만 수정할 수 있습니다.");
+		}
+		findRecipe.addMaterial(command);
+		jpaRecipeRepository.save(findRecipe);
+	}
+
+	@Override
+	public void removeMaterial(
+			Validator<RemoveMaterial> validator, 
+			RecipeId targetRecipeId, 
+			RemoveMaterial command,
+			Cooker recipeOwner
+		) {
+		validator.validate(command);
+		Recipe findRecipe = jpaRecipeRepository.findById(targetRecipeId)
+				.orElseThrow(()->new RecipeNotFoundException("해당 레시피가 존재하지 않습니다."));
+		if(!recipeOwner.isMyRecipe(findRecipe)) {
+			throw new InvalidRecipeException("자신의 레시피만 수정할 수 있습니다.");
+		}
+		findRecipe.removeMaterial(command);
+		jpaRecipeRepository.save(findRecipe);
+	}
+
+	@Override
+	public void changeServing(
+			Validator<ChangeServing> validator, 
+			RecipeId targetRecipeId, 
+			ChangeServing command,
+			Cooker recipeOwner
+		) {
+		validator.validate(command);
+		Recipe findRecipe = jpaRecipeRepository.findById(targetRecipeId)
+				.orElseThrow(()->new RecipeNotFoundException("해당 레시피가 존재하지 않습니다."));
+		if(!recipeOwner.isMyRecipe(findRecipe)) {
+			throw new InvalidRecipeException("자신의 레시피만 수정할 수 있습니다.");
+		}
+		findRecipe.changeServing(command);
 		jpaRecipeRepository.save(findRecipe);
 	}
 }

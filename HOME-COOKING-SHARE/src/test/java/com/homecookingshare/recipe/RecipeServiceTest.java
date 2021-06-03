@@ -28,6 +28,7 @@ import com.homecookingshare.domain.recipe.Recipe.Level;
 import com.homecookingshare.domain.recipe.Recipe.RecipeCategory;
 import com.homecookingshare.domain.recipe.Recipe.Serving;
 import com.homecookingshare.domain.recipe.RecipeId;
+import com.homecookingshare.domain.recipe.RecipeMainImage;
 
 @SuppressWarnings({"rawtypes","unchecked"})
 public class RecipeServiceTest {
@@ -36,36 +37,54 @@ public class RecipeServiceTest {
 	JpaRecipeRepository jpaRecipeRepository = mock(JpaRecipeRepository.class);
 	RecipeService recipeService = new SimpleRecipeService(jpaRecipeRepository, jpaMemberRepsitory);
 	
+	RecipeId targetRecipeId = new RecipeId("recipeId");
+	
+	Cooker mockCooker = mock(Cooker.class);
+
+	Recipe mockRecipe = mock(Recipe.class);
+
+	@Test
+	void 인분_변경() {
+		Validator<RecipeCommand.ChangeServing> validator = new ChangeServingValidator();
+		RecipeCommand.ChangeServing command = new RecipeCommand.ChangeServing(Serving.ONE);
+		
+		recipeService.changeServing(validator,targetRecipeId,command,mockCooker);
+	}
+	
+	@Test
+	void 재료_삭제() {
+		Validator<RecipeCommand.RemoveMaterial> validator = new RemoveMaterialValidator();
+		RecipeCommand.RemoveMaterial command = new RecipeCommand.RemoveMaterial("재료", "재료 용량");
+		
+		recipeService.removeMaterial(validator,targetRecipeId,command,mockCooker);
+	}
+	
+	@Test
+	void 재료_추가() {
+		Validator<RecipeCommand.AddMaterial> validator = new AddMaterialValidator();
+		RecipeCommand.AddMaterial command = new RecipeCommand.AddMaterial("재료","재료 용량");
+		
+		recipeService.addMaterial(validator,targetRecipeId,command,mockCooker);
+	}
+	
+	@Test
+	void 메인_이미지_변경() {
+		Validator<RecipeCommand.ChangeMainImage> validator = new ChangeMainImageValidator();
+		RecipeCommand.ChangeMainImage command = new RecipeCommand.ChangeMainImage(new MockMultipartFile("file.jpg", "file.jpg","",new byte[] {}));
+		
+		when(mockRecipe.getMainImage())
+			.thenReturn(mock(RecipeMainImage.class));
+		recipeService.changeMainImage(validator,mock(FileUploader.class),targetRecipeId,command,mockCooker);
+	}
+	
 	@Test
 	void 난이도_변경() {
-		RecipeId targetRecipeId = new RecipeId("recipeId");
-		Cooker mockCooker = mock(Cooker.class);
-	
-		Recipe mockRecipe = mock(Recipe.class);
-
-		when(mockCooker.isMyRecipe(any()))
-			.thenReturn(true);
-		
-		when(jpaRecipeRepository.findById(targetRecipeId))
-			.thenReturn(Optional.of(mockRecipe));
-		
 		RecipeCommand.ChangeLevel command = new RecipeCommand.ChangeLevel(Level.FOUR);
 		recipeService.changeLevel(mock(Validator.class), targetRecipeId, command, mockCooker);
 	}
 	
 	@Test
 	void 조리과정_삭제() {
-		RecipeId targetRecipeId = new RecipeId("recipeId");
-		Cooker mockCooker = mock(Cooker.class);
-	
-		Recipe mockRecipe = mock(Recipe.class);
-
-		when(mockCooker.isMyRecipe(any()))
-			.thenReturn(true);
-		
-		when(jpaRecipeRepository.findById(targetRecipeId))
-			.thenReturn(Optional.of(mockRecipe));
-
 		RecipeCommand.RemoveMakeProcess command = new RecipeCommand.RemoveMakeProcess(1);
 		recipeService.removedMakeProcess(mock(Validator.class), targetRecipeId, command, mockCooker);
 	}
@@ -73,16 +92,6 @@ public class RecipeServiceTest {
 	@Test
 	void 조리과정_추가() {
 		Validator validator = mock(Validator.class);
-		RecipeId targetRecipeId = new RecipeId("recipeId");
-		Cooker mockCooker = mock(Cooker.class);
-		
-		Recipe mockRecipe = mock(Recipe.class);
-		
-		when(mockCooker.isMyRecipe(any()))
-			.thenReturn(true);
-		
-		when(jpaRecipeRepository.findById(targetRecipeId))
-			.thenReturn(Optional.of(mockRecipe));
 		
 		RecipeCommand.AddMakeProcess command = new RecipeCommand.AddMakeProcess(
 				new MockMultipartFile("파일.jpg","파일.jpg","",new byte[] {}), "삽입할 내용", 0);
@@ -97,18 +106,6 @@ public class RecipeServiceTest {
 	void 레시피_타이틀_수정() {
 		Validator validator = mock(Validator.class);
 
-		RecipeId targetRecipeId = new RecipeId("recipeId");
-		
-		Recipe mockRecipe = mock(Recipe.class);
-		
-		Cooker mockCooker = mock(Cooker.class);
-		
-		when(mockCooker.isMyRecipe(any()))
-			.thenReturn(true);
-		
-		when(jpaRecipeRepository.findById(targetRecipeId))
-			.thenReturn(Optional.of(mockRecipe));
-		
 		RecipeCommand.ChangeTitle command = new RecipeCommand.ChangeTitle("타이틀 수정");
 		recipeService.changeTitle(validator, targetRecipeId,command, mockCooker);
 		
@@ -144,7 +141,7 @@ public class RecipeServiceTest {
 				);
 		RecipeCommand.RegisterRecipe command = new RecipeCommand.RegisterRecipe(
 					"타이틀",
-					0,
+					new MockMultipartFile("file.jpg", "file.jpg","",new byte[] {}),
 					RecipeCategory.Chinese,
 					Level.FOUR,
 					Serving.FIVE,
@@ -163,5 +160,9 @@ public class RecipeServiceTest {
 	void setUp() {
 		when(jpaMemberRepsitory.findById(any()))
 			.thenReturn(Optional.of(mock(Member.class)));
+		when(mockCooker.isMyRecipe(any()))
+			.thenReturn(true);
+		when(jpaRecipeRepository.findById(targetRecipeId))
+		.thenReturn(Optional.of(mockRecipe));
 	}
 }

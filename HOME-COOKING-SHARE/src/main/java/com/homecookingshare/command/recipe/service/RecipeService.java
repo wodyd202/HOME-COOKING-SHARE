@@ -2,9 +2,13 @@ package com.homecookingshare.command.recipe.service;
 
 import com.homecookingshare.command.recipe.model.RecipeCommand;
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMakeProcess;
+import com.homecookingshare.command.recipe.model.RecipeCommand.AddMaterial;
 import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeLevel;
+import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeMainImage;
+import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeServing;
 import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeTitle;
 import com.homecookingshare.command.recipe.model.RecipeCommand.RemoveMakeProcess;
+import com.homecookingshare.command.recipe.model.RecipeCommand.RemoveMaterial;
 import com.homecookingshare.common.Validator;
 import com.homecookingshare.common.fileUpload.FileUploader;
 import com.homecookingshare.domain.recipe.Cooker;
@@ -45,6 +49,35 @@ public interface RecipeService {
 			Validator<RecipeCommand.ChangeLevel> validator, 
 			RecipeId targetRecipeId, 
 			ChangeLevel command, 
+			Cooker recipeOwner
+		);
+
+	void changeMainImage(
+			Validator<ChangeMainImage> validator,
+			FileUploader fileUploader,
+			RecipeId targetRecipeId, 
+			ChangeMainImage command,
+			Cooker recipeOwner
+		);
+
+	void addMaterial(
+			Validator<AddMaterial> validator, 
+			RecipeId targetRecipeId, 
+			AddMaterial command, 
+			Cooker recipeOwner
+		);
+
+	void removeMaterial(
+			Validator<RemoveMaterial> validator, 
+			RecipeId targetRecipeId, 
+			RemoveMaterial command,
+			Cooker recipeOwner
+		);
+
+	void changeServing(
+			Validator<ChangeServing> validator, 
+			RecipeId targetRecipeId, 
+			ChangeServing command,
 			Cooker recipeOwner
 		);
 }

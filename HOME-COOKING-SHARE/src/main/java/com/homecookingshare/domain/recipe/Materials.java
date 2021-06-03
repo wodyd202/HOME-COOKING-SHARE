@@ -2,6 +2,7 @@ package com.homecookingshare.domain.recipe;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Convert;
 
@@ -18,4 +19,13 @@ public class Materials implements Serializable{
 
 	@Convert(converter = MaterialConverter.class)
 	private List<Material> materials;
+
+	public void add(Material material) {
+		this.materials.add(material);
+	}
+
+	public void remove(Material material) {
+		this.materials = materials.stream()
+				.filter(materialValue->materialValue.getName().equals(materialValue.getName())).collect(Collectors.toList());
+	}
 }

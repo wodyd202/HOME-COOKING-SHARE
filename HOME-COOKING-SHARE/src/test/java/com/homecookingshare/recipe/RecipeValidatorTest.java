@@ -29,7 +29,7 @@ public class RecipeValidatorTest {
 				);
 		RecipeCommand.RegisterRecipe command = new RecipeCommand.RegisterRecipe(
 					"타이틀",
-					0,
+					new MockMultipartFile("file.jpg", "file.jpg","",new byte[] {}),
 					RecipeCategory.Japanese,
 					Level.FOUR,
 					Serving.FIVE,
@@ -61,7 +61,7 @@ public class RecipeValidatorTest {
 				);
 		RecipeCommand.RegisterRecipe command = new RecipeCommand.RegisterRecipe(
 					"타이틀",
-					0,
+					new MockMultipartFile("file.jpg", "file.jpg","",new byte[] {}),
 					RecipeCategory.Chinese,
 					Level.FOUR,
 					Serving.FIVE,
@@ -99,7 +99,7 @@ public class RecipeValidatorTest {
 				);
 		RecipeCommand.RegisterRecipe command = new RecipeCommand.RegisterRecipe(
 					"타이틀",
-					0,
+					new MockMultipartFile("file.jpg", "file.jpg","",new byte[] {}),
 					RecipeCategory.Korean,
 					Level.FOUR,
 					Serving.FIVE,

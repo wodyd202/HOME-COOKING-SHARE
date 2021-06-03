@@ -3,6 +3,7 @@ package com.homecookingshare.domain.recipe;
 import java.io.Serializable;
 
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMaterial;
+import com.homecookingshare.command.recipe.model.RecipeCommand.RemoveMaterial;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,11 @@ public class Material implements Serializable {
 	private String capacity;
 	
 	public Material(AddMaterial material) {
+		this.name = material.getName();
+		this.capacity = material.getCapacity();
+	}
+
+	public Material(RemoveMaterial material) {
 		this.name = material.getName();
 		this.capacity = material.getCapacity();
 	}

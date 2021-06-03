@@ -1,9 +1,12 @@
 package com.homecookingshare.command.recipe.infra.validator;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.homecookingshare.command.recipe.exception.InvalidRecipeException;
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMakeProcess;
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMaterial;
 import com.homecookingshare.common.Validator;
+import com.homecookingshare.domain.recipe.Recipe.Serving;
 
 public abstract class AbstractRecipeValidator<T> implements Validator<T> {
 	protected void titleValidation(String title) {
@@ -34,5 +37,14 @@ public abstract class AbstractRecipeValidator<T> implements Validator<T> {
 		if(makingTime % 1000 != 0 || makingTime < 1000) {
 			throw new InvalidRecipeException("제작 시간을 1000 단위로 입력해주세요.");
 		}
+	}
+	
+	protected void mainImageValidation(MultipartFile file) {
+		verifyNotNullObject(file, new InvalidRecipeException("레시피 메인 이미지를 입력해주세요."));
+		verifyIsImageFile(file, new InvalidRecipeException("메인 이미지는 이미지 파일만 업로드 가능합니다."));
+	}
+	
+	protected void servingValidation(Serving serving) {
+		verifyNotNullObject(serving, new InvalidRecipeException("레시피 인분을 입력해주세요."));
 	}
 }

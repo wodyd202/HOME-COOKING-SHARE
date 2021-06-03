@@ -3,6 +3,7 @@ package com.homecookingshare.command.recipe.infra.validator;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.homecookingshare.command.recipe.exception.InvalidRecipeException;
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMakeProcess;
@@ -18,11 +19,11 @@ public class RegisterRecipeValidator extends AbstractRecipeValidator<RegisterRec
 		List<AddMakeProcess> makeProcesses = obj.getMakeProcesses();
 		List<AddMaterial> materials = obj.getMaterials();
 		long makingTime = obj.getMakingTime();
-		int mainImageIdx = obj.getMainImageIdx();
+		MultipartFile mainImage = obj.getMainImage();
 		
 		verifyNotNullObject(makeProcesses, new InvalidRecipeException("레시피 제작 과정을 입력해주세요."));
 		verifyNotNullObject(materials, new InvalidRecipeException("레시피 재료를 입력해주세요."));
-
+		
 		if(makeProcesses.size() == 0) {
 			throw new InvalidRecipeException("레시피 제작 과정을 입력해주세요.");
 		}
@@ -33,15 +34,9 @@ public class RegisterRecipeValidator extends AbstractRecipeValidator<RegisterRec
 		
 		titleValidation(title);
 		makingTimeValidation(makingTime);
+		mainImageValidation(mainImage);
 		materials.forEach(this::materialValidation);
 		makeProcesses.forEach(this::makeProcessValidation);
-		mainImageIdxValidation(mainImageIdx, makeProcesses);
-	}
-	
-	private void mainImageIdxValidation(long mainImageIdx, List<AddMakeProcess> makeProcesses) {
-		if(mainImageIdx < 0 || mainImageIdx >= makeProcesses.size()) {
-			throw new InvalidRecipeException("메인 이미지를 다시 지정해주세요.");
-		}
 	}
 	
 }

@@ -10,6 +10,7 @@ import com.homecookingshare.domain.recipe.Recipe.Level;
 import com.homecookingshare.domain.recipe.Recipe.RecipeCategory;
 import com.homecookingshare.domain.recipe.Recipe.Serving;
 import com.homecookingshare.domain.recipe.RecipeId;
+import com.homecookingshare.domain.recipe.RecipeMainImage;
 import com.homecookingshare.domain.recipe.RecipeTitle;
 
 import lombok.Getter;
@@ -18,7 +19,7 @@ import lombok.Getter;
 public class RegisteredRecipe extends AbstractRecipeEvent{
 	private final Cooker cooker;
 	private final RecipeTitle title;
-	private final String mainImage;
+	private final RecipeMainImage mainImage;
 	private final RecipeCategory category;
 	private final Serving serving;
 	private final Level level;
@@ -31,7 +32,7 @@ public class RegisteredRecipe extends AbstractRecipeEvent{
 			RecipeId id,
 			Cooker cooker,
 			RecipeTitle title,
-			String mainImage,
+			RecipeMainImage mainImage,
 			RecipeCategory category,
 			Serving serving,
 			Level level,

@@ -17,6 +17,7 @@ import com.homecookingshare.domain.recipe.Recipe.Level;
 import com.homecookingshare.domain.recipe.Recipe.RecipeCategory;
 import com.homecookingshare.domain.recipe.Recipe.Serving;
 import com.homecookingshare.domain.recipe.RecipeId;
+import com.homecookingshare.domain.recipe.RecipeMainImage;
 import com.homecookingshare.domain.recipe.RecipeTitle;
 import com.homecookingshare.domain.recipe.read.Recipe;
 import com.homecookingshare.query.recipe.infra.RecipeReadRepository;
@@ -34,7 +35,7 @@ public class LoadTest {
 				.id(RecipeId.create())
 				.cooker(new Cooker("test@naver.com"))
 				.title(new RecipeTitle("타이틀"))
-				.mainImage("메인이미지")
+				.mainImage(new RecipeMainImage("메인이미지"))
 				.category(RecipeCategory.Korean)
 				.serving(Serving.ETC)
 				.level(Level.FIVE)

@@ -16,13 +16,21 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.domain.AbstractAggregateRoot;
 
 import com.homecookingshare.command.recipe.model.RecipeCommand.AddMakeProcess;
+import com.homecookingshare.command.recipe.model.RecipeCommand.AddMaterial;
 import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeLevel;
+import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeMainImage;
+import com.homecookingshare.command.recipe.model.RecipeCommand.ChangeServing;
 import com.homecookingshare.command.recipe.model.RecipeCommand.RegisterRecipe;
 import com.homecookingshare.command.recipe.model.RecipeCommand.RemoveMakeProcess;
+import com.homecookingshare.command.recipe.model.RecipeCommand.RemoveMaterial;
 import com.homecookingshare.domain.recipe.event.AddedMakeProcess;
+import com.homecookingshare.domain.recipe.event.AddedMaterial;
 import com.homecookingshare.domain.recipe.event.ChangedLevel;
+import com.homecookingshare.domain.recipe.event.ChangedMainImage;
+import com.homecookingshare.domain.recipe.event.ChangedServing;
 import com.homecookingshare.domain.recipe.event.RegisteredRecipe;
 import com.homecookingshare.domain.recipe.event.RemovedMakeProcess;
+import com.homecookingshare.domain.recipe.event.RemovedMaterial;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -47,7 +55,8 @@ public class Recipe extends AbstractAggregateRoot<Recipe> {
 	@Embedded
 	private RecipeTitle title;
 
-	private String mainImage;
+	@Embedded
+	private RecipeMainImage mainImage;
 	
 	@Enumerated(EnumType.STRING)
 	private RecipeCategory category;
@@ -84,7 +93,7 @@ public class Recipe extends AbstractAggregateRoot<Recipe> {
 		this.materials = new Materials(command.getMaterials().stream().map(Material::new).collect(Collectors.toList()));
 		this.makeProcess = new MakeProcesses(command.getMakeProcesses().stream().map(MakeProcess::new).collect(Collectors.toList()));
 		
-		this.mainImage = this.makeProcess.getMakeProcess().get(command.getMainImageIdx()).getImagePath();
+		this.mainImage = new RecipeMainImage(command.getMainImage());
 		this.createDateTime = new Date();
 		this.cooker = cooker;
 		registerEvent(new RegisteredRecipe(id, cooker, title, mainImage, category, serving, level, time, materials, makeProcess, createDateTime));
@@ -114,5 +123,25 @@ public class Recipe extends AbstractAggregateRoot<Recipe> {
 	public void changeLevel(ChangeLevel command) {
 		this.level = command.getLevel();
 		registerEvent(new ChangedLevel(this.id, this.level));
+	}
+
+	public void changeMainImage(ChangeMainImage command) {
+		this.mainImage = new RecipeMainImage(command.getFile());
+		registerEvent(new ChangedMainImage(this.id, this.mainImage));
+	}
+
+	public void addMaterial(AddMaterial command) {
+		this.materials.add(new Material(command));
+		registerEvent(new AddedMaterial(this.id, this.materials));
+	}
+
+	public void removeMaterial(RemoveMaterial command) {
+		this.materials.remove(new Material(command));
+		registerEvent(new RemovedMaterial(this.id, this.materials));
+	}
+
+	public void changeServing(ChangeServing command) {
+		this.serving = command.getServing();
+		registerEvent(new ChangedServing(this.id, this.serving));
 	}
 }

@@ -12,6 +12,7 @@ import com.homecookingshare.domain.recipe.Recipe.Level;
 import com.homecookingshare.domain.recipe.Recipe.RecipeCategory;
 import com.homecookingshare.domain.recipe.Recipe.Serving;
 import com.homecookingshare.domain.recipe.RecipeId;
+import com.homecookingshare.domain.recipe.RecipeMainImage;
 import com.homecookingshare.domain.recipe.RecipeTitle;
 
 import lombok.AccessLevel;
@@ -30,7 +31,7 @@ public class Recipe extends AbstractAggregateRoot<Recipe> {
 	private Cooker cooker;
 
 	private RecipeTitle title;
-	private String mainImage;
+	private RecipeMainImage mainImage;
 	
 	private RecipeCategory category;
 	private Serving serving;
@@ -46,11 +47,23 @@ public class Recipe extends AbstractAggregateRoot<Recipe> {
 		this.title = title;
 	}
 
-	public void changeMakeProcess(MakeProcesses makeProcesses) {
+	public void changeMakeProcesses(MakeProcesses makeProcesses) {
 		this.makeProcess = makeProcesses;
 	}
 
 	public void changeLevel(Level level) {
 		this.level = level;
+	}
+
+	public void changeMainImage(RecipeMainImage mainImage) {
+		this.mainImage = mainImage;
+	}
+
+	public void changeMaterials(Materials materials) {
+		this.materials = materials;
+	}
+
+	public void changeServing(Serving serving) {
+		this.serving = serving;
 	}
 }

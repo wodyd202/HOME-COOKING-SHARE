@@ -26,6 +26,14 @@ public class RecipeCommand {
 	}
 	
 	@Getter
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	@AllArgsConstructor
+	public static class RemoveMaterial {
+		private String name;
+		private String capacity;
+	}
+	
+	@Getter
 	@Setter
 	@AllArgsConstructor
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -41,7 +49,7 @@ public class RecipeCommand {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class RegisterRecipe {
 		private String title;
-		private int mainImageIdx;
+		private MultipartFile mainImage;
 		private RecipeCategory category;
 		private Level level;
 		private Serving serving;
@@ -69,5 +77,20 @@ public class RecipeCommand {
 	@NoArgsConstructor(access = AccessLevel.PROTECTED)
 	public static class ChangeLevel {
 		private Level level;
+	}
+	
+	@Getter
+	@AllArgsConstructor
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class ChangeServing {
+		private Serving serving;
+	}
+	
+	@Getter
+	@Setter
+	@AllArgsConstructor
+	@NoArgsConstructor(access = AccessLevel.PROTECTED)
+	public static class ChangeMainImage {
+		private MultipartFile file;
 	}
 }

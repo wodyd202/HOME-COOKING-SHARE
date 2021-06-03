@@ -16,6 +16,7 @@ import com.homecookingshare.domain.recipe.MakeProcesses;
 import com.homecookingshare.domain.recipe.MakingTime;
 import com.homecookingshare.domain.recipe.Materials;
 import com.homecookingshare.domain.recipe.RecipeId;
+import com.homecookingshare.domain.recipe.RecipeMainImage;
 import com.homecookingshare.domain.recipe.RecipeTitle;
 import com.homecookingshare.domain.recipe.Recipe.Level;
 import com.homecookingshare.domain.recipe.Recipe.RecipeCategory;
@@ -55,7 +56,7 @@ public class RedisRecipeReadRepository implements RecipeReadRepository{
 
 			hashOperations.put(RECIPE_KEY + id, "cooker", recipe.getCooker().getEmail());
 			hashOperations.put(RECIPE_KEY + id, "title", recipe.getTitle().getTitle());
-			hashOperations.put(RECIPE_KEY + id, "mainImage", recipe.getMainImage());
+			hashOperations.put(RECIPE_KEY + id, "mainImage", recipe.getMainImage().getPath());
 			hashOperations.put(RECIPE_KEY + id, "category", recipe.getCategory().toString());
 			hashOperations.put(RECIPE_KEY + id, "serving", recipe.getServing().toString());
 			hashOperations.put(RECIPE_KEY + id, "level", recipe.getLevel().toString());
@@ -83,7 +84,7 @@ public class RedisRecipeReadRepository implements RecipeReadRepository{
 		Recipe recipe = Recipe.builder()
 				.cooker(new Cooker(hashOperations.get(RECIPE_KEY + id, "cooker").toString()))
 				.title(new RecipeTitle(hashOperations.get(RECIPE_KEY + id, "title").toString()))
-				.mainImage(hashOperations.get(RECIPE_KEY + id, "mainImage").toString())
+				.mainImage(new RecipeMainImage(hashOperations.get(RECIPE_KEY + id, "mainImage").toString()))
 				.category(RecipeCategory.valueOf(hashOperations.get(RECIPE_KEY + id, "category").toString()))
 				.serving(Serving.valueOf(hashOperations.get(RECIPE_KEY + id, "serving").toString()))
 				.level(Level.valueOf(hashOperations.get(RECIPE_KEY + id, "level").toString()))
@@ -94,6 +95,7 @@ public class RedisRecipeReadRepository implements RecipeReadRepository{
 				.build();
 		return Optional.of(recipe);
 		}catch (Exception e) {
+			e.printStackTrace();
 			throw new IllegalArgumentException();
 		}
 	}
