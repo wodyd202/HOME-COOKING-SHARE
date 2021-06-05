@@ -1,7 +1,11 @@
 package com.homecookingshare.query.recipe.infra;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,13 +19,14 @@ import com.homecookingshare.domain.recipe.Cooker;
 import com.homecookingshare.domain.recipe.MakeProcesses;
 import com.homecookingshare.domain.recipe.MakingTime;
 import com.homecookingshare.domain.recipe.Materials;
-import com.homecookingshare.domain.recipe.RecipeId;
-import com.homecookingshare.domain.recipe.RecipeMainImage;
-import com.homecookingshare.domain.recipe.RecipeTitle;
 import com.homecookingshare.domain.recipe.Recipe.Level;
 import com.homecookingshare.domain.recipe.Recipe.RecipeCategory;
 import com.homecookingshare.domain.recipe.Recipe.Serving;
+import com.homecookingshare.domain.recipe.RecipeId;
+import com.homecookingshare.domain.recipe.RecipeMainImage;
+import com.homecookingshare.domain.recipe.RecipeTitle;
 import com.homecookingshare.domain.recipe.read.Recipe;
+import com.homecookingshare.query.recipe.model.RecipeSearch;
 
 @Repository
 @SuppressWarnings({"rawtypes","unchecked"})
@@ -44,10 +49,21 @@ public class RedisRecipeReadRepository implements RecipeReadRepository{
 		HashOperations hashOperations = template.opsForHash();
 		SetOperations setOperations = template.opsForSet();
 		
-		saveRecipeHash(recipe, id, hashOperations);
+		Optional<Recipe> findByRecipeId = findByRecipeId(id);
+		if(findByRecipeId.isPresent()) {
+			Recipe findRecipe = findByRecipeId.get();
+			setOperations.remove(RECIPE_LIST_KEY + ":serving:" + findRecipe.getServing().toString(), id.getRecipeId());
+			setOperations.remove(RECIPE_LIST_KEY + ":level:" + findRecipe.getLevel().toString(), id.getRecipeId());
+			setOperations.remove(RECIPE_LIST_KEY + ":category:" + findRecipe.getCategory().toString(), id.getRecipeId());
+		}
 		
-		setOperations.add(RECIPE_LIST_KEY + recipe.getCategory().toString(), id.getRecipeId());
+		setOperations.add(RECIPE_LIST_KEY, id.getRecipeId());
+		setOperations.add(RECIPE_LIST_KEY + ":serving:" + recipe.getServing().toString(), id.getRecipeId());
+		setOperations.add(RECIPE_LIST_KEY + ":level:" + recipe.getLevel().toString(), id.getRecipeId());
+		setOperations.add(RECIPE_LIST_KEY + ":category:" + recipe.getCategory().toString(), id.getRecipeId());
 		setOperations.add(RECIPE_KEY + recipe.getCooker().getEmail(), id.getRecipeId());
+
+		saveRecipeHash(recipe, id, hashOperations);
 	}
 
 	private void saveRecipeHash(Recipe recipe, RecipeId id, HashOperations<String, Object, Object> hashOperations) {
@@ -104,11 +120,35 @@ public class RedisRecipeReadRepository implements RecipeReadRepository{
 	}
 
 	private boolean notExistRecipe(SetOperations setOperations, RecipeId targetId) {
-		Boolean existRecipeIntoKorean = setOperations.isMember(RECIPE_LIST_KEY + RecipeCategory.Korean.toString(), targetId.getRecipeId());
-		Boolean existRecipeIntoChinese = setOperations.isMember(RECIPE_LIST_KEY + RecipeCategory.Chinese.toString(), targetId.getRecipeId());
-		Boolean existRecipeIntoJapanese = setOperations.isMember(RECIPE_LIST_KEY + RecipeCategory.Japanese.toString(), targetId.getRecipeId());
-		Boolean existRecipeIntoWestern = setOperations.isMember(RECIPE_LIST_KEY + RecipeCategory.Western.toString(), targetId.getRecipeId());
+		Boolean existRecipeIntoKorean = setOperations.isMember(RECIPE_LIST_KEY + ":category:" + RecipeCategory.Korean.toString(), targetId.getRecipeId());
+		Boolean existRecipeIntoChinese = setOperations.isMember(RECIPE_LIST_KEY + ":category:" + RecipeCategory.Chinese.toString(), targetId.getRecipeId());
+		Boolean existRecipeIntoJapanese = setOperations.isMember(RECIPE_LIST_KEY + ":category:" + RecipeCategory.Japanese.toString(), targetId.getRecipeId());
+		Boolean existRecipeIntoWestern = setOperations.isMember(RECIPE_LIST_KEY + ":category:" + RecipeCategory.Western.toString(), targetId.getRecipeId());
 		
 		return !existRecipeIntoKorean && !existRecipeIntoJapanese && !existRecipeIntoChinese && !existRecipeIntoWestern;
+	}
+
+	@Override
+	public List<Recipe> findAll(RecipeSearch dto) {
+		SetOperations setOperations = template.opsForSet();
+		Collection otherKeys = new ArrayList<>();;
+		if(dto.getWho() != null && !dto.getWho().isEmpty()) {
+			otherKeys.add(RECIPE_KEY + dto.getWho());
+		}
+		if(dto.getLevel() != null) {
+			otherKeys.add(RECIPE_LIST_KEY + ":level:" + dto.getLevel().toString());
+		}
+		if(dto.getServing() != null) {
+			otherKeys.add(RECIPE_LIST_KEY + ":serving:" + dto.getServing().toString());
+		}
+		if(dto.getCategory() != null) {
+			otherKeys.add(RECIPE_LIST_KEY + ":category:" + dto.getCategory().toString());
+		}
+		Set intersect = setOperations.intersect(RECIPE_LIST_KEY, otherKeys);
+		List<Recipe> recipes = new ArrayList<>();
+		intersect.forEach(key->{
+			recipes.add(findByRecipeId(new RecipeId(key.toString())).get());
+		});
+		return recipes;
 	}
 }

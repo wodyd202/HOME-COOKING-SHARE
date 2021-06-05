@@ -15,6 +15,7 @@ import com.homecookingshare.config.security.jwt.api.JwtApi;
 import com.homecookingshare.config.security.jwt.api.JwtToken;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 
 @Api(tags = "사용자 이메일 인증 관련 API")
@@ -26,6 +27,7 @@ public class MemberEmailAuthCommandApi {
 	private EmailAuthenticationValidator authenticationValidator;
 	private JwtApi jwtApi;
 	
+	@ApiOperation("회원 이메일 인증")
 	@PostMapping
 	public ResponseEntity<JwtToken> execute(
 			@RequestBody MemberEmailAuthCommand.Verifycation command
