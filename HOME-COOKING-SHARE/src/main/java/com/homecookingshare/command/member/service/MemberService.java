@@ -8,6 +8,7 @@ import com.homecookingshare.common.fileUpload.FileUploader;
 import com.homecookingshare.domain.authKey.event.AuthSuccessed;
 import com.homecookingshare.domain.member.Email;
 import com.homecookingshare.domain.member.Member;
+import com.homecookingshare.domain.recipe.RecipeId;
 
 public interface MemberService {
 	Member create(
@@ -30,5 +31,10 @@ public interface MemberService {
 	
 	void authSuccess(
 			AuthSuccessed event
+		);
+
+	void interestRecipe(
+			Email targetMemberEmail, 
+			RecipeId targetRecipeId
 		);
 }

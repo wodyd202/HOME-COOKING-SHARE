@@ -59,7 +59,8 @@ public class SwaggerConfig {
         				RequestHandlerSelectors.basePackage("com.homecookingshare.command.member.api"),
         				RequestHandlerSelectors.basePackage("com.homecookingshare.command.memberEmailAuth.api"),
         				RequestHandlerSelectors.basePackage("com.homecookingshare.command.recipe.api"),
-        				RequestHandlerSelectors.basePackage("com.homecookingshare.query.recipe.api")
+        				RequestHandlerSelectors.basePackage("com.homecookingshare.query.recipe.api"),
+        				RequestHandlerSelectors.basePackage("com.homecookingshare.query.member.api")
 					)
         		)
                 .paths(PathSelectors.ant("/**"))

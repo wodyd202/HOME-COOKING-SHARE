@@ -22,7 +22,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import com.homecookingshare.command.member.model.MemberCommand.RegisterMember;
 import com.homecookingshare.domain.member.event.ChangedMemberImage;
 import com.homecookingshare.domain.member.event.ChangedMemberPassword;
+import com.homecookingshare.domain.member.event.InterestedRecipe;
 import com.homecookingshare.domain.member.event.RegisterdMember;
+import com.homecookingshare.domain.recipe.read.Recipe;
 
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -62,7 +64,10 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createDateTime;
-
+	
+	@Embedded
+	private InterestRecipes interestRecipes;
+	
 	public Member(Email email) {
 		this.email = email;
 	}
@@ -75,6 +80,7 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 		this.authType = AuthType.NO;
 		this.state = MemberState.CREATE;
 		this.createDateTime = new Date();
+		this.interestRecipes = new InterestRecipes();
 		registerEvent(new RegisterdMember(this.email, this.password, this.profile));
 	}
 
@@ -104,6 +110,17 @@ public class Member extends AbstractAggregateRoot<Member> implements Serializabl
 
 	public void authSuccess() {
 		this.authType = AuthType.YES;
+	}
+
+	public void interestRecipe(Recipe targetRecipe) {
+		InterestRecipes interestRecipes = this.getInterestRecipes();
+		if(interestRecipes.alreadyInterestRecipe(targetRecipe)) {
+			interestRecipes.unInterest(targetRecipe);
+			registerEvent(new UnInterestedRecipe(this.email, targetRecipe));
+		}else {
+			interestRecipes.interest(targetRecipe);
+			registerEvent(new InterestedRecipe(this.email, targetRecipe));
+		}
 	}
 
 }

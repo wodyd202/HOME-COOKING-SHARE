@@ -16,11 +16,15 @@ import com.homecookingshare.command.member.infra.JpaMemberRepository;
 import com.homecookingshare.command.member.model.MemberCommand.ChangeImage;
 import com.homecookingshare.command.member.model.MemberCommand.ChangePassword;
 import com.homecookingshare.command.member.model.MemberCommand.RegisterMember;
+import com.homecookingshare.command.recipe.exception.RecipeNotFoundException;
 import com.homecookingshare.common.Validator;
 import com.homecookingshare.common.fileUpload.FileUploader;
 import com.homecookingshare.domain.authKey.event.AuthSuccessed;
 import com.homecookingshare.domain.member.Email;
 import com.homecookingshare.domain.member.Member;
+import com.homecookingshare.domain.recipe.RecipeId;
+import com.homecookingshare.domain.recipe.read.Recipe;
+import com.homecookingshare.query.recipe.infra.RecipeReadRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -29,7 +33,8 @@ import lombok.AllArgsConstructor;
 public class SimpleMemberService implements MemberService {
 	private PasswordEncoder passwordEncoder;
 	private JpaMemberRepository memberRepository;
-
+	private RecipeReadRepository recipeRepository;
+	
 	@Override
 	public Member create(
 			Validator<RegisterMember> validator, 
@@ -96,8 +101,26 @@ public class SimpleMemberService implements MemberService {
 	
 	@EventListener
 	@Override
-	public void authSuccess(AuthSuccessed event) {
+	public void authSuccess(
+			AuthSuccessed event
+		) {
 		Member member = memberRepository.findById(new Email(event.getTargetEmail().getEmail())).get();
 		member.authSuccess();
 	}
+
+	@Override
+	public void interestRecipe(
+			Email targetMemberEmail, 
+			RecipeId targetRecipeId
+		) {
+		Member findMember = memberRepository.findById(targetMemberEmail).orElseThrow(()->
+			new MemberNotFoundException("해당 이메일의 유저가 존재하지 않습니다."));
+		if(findMember.isDeleted()) {
+			throw new AlreadyDeletedMemberException("이미 탈퇴한 회원입니다.");
+		}
+		Recipe findRecipe = recipeRepository.findByRecipeId(targetRecipeId).orElseThrow(()->new RecipeNotFoundException("해당 레시피가 존재하지 않습니다."));
+		findMember.interestRecipe(findRecipe);
+		memberRepository.save(findMember);
+	}
+	
 }

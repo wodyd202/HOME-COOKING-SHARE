@@ -6,10 +6,12 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.homecookingshare.domain.member.AuthType;
 import com.homecookingshare.domain.member.Email;
+import com.homecookingshare.domain.member.InterestRecipes;
 import com.homecookingshare.domain.member.MemberRule;
 import com.homecookingshare.domain.member.MemberState;
 import com.homecookingshare.domain.member.Password;
 import com.homecookingshare.domain.member.Profile;
+import com.homecookingshare.domain.recipe.read.Recipe;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -37,11 +39,21 @@ public class Member implements Serializable {
 		this.authType = AuthType.YES;
 	}
 
+	private InterestRecipes interestRecipes;
+	
 	public void changeImage(String imageName) {
 		this.profile.changeImage(imageName);
 	}
 
 	public void changePassword(Password password) {
 		this.password = password;
+	}
+
+	public void interestRecipe(Recipe targetRecipe) {
+		interestRecipes.interest(targetRecipe);
+	}
+
+	public void unInterestRecipe(Recipe targetRecipe) {
+		interestRecipes.unInterest(targetRecipe);
 	}
 }

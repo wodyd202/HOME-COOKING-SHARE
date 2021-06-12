@@ -2,6 +2,7 @@ package com.homecookingshare.command.member.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,6 +17,7 @@ import com.homecookingshare.command.member.service.MemberService;
 import com.homecookingshare.common.fileUpload.FileUploader;
 import com.homecookingshare.config.security.LoginUser;
 import com.homecookingshare.domain.member.Member;
+import com.homecookingshare.domain.recipe.RecipeId;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -64,5 +66,15 @@ public class MemberCommandApi {
 		){
 		Member changeImage = memberService.changeImage(fileUploader, imageFileValidator, loginMember.getEmail(), command);
 		return new ResponseEntity<>(changeImage, HttpStatus.OK);
+	}
+	
+	@ApiOperation("레시피 관심 등록 및 해제")
+	@PostMapping("{targetRecipeId}/interest")
+	public ResponseEntity<RecipeId> execute(
+				@PathVariable RecipeId targetRecipeId,
+				@LoginUser com.homecookingshare.domain.member.read.Member loginMember
+			){
+		memberService.interestRecipe(loginMember.getEmail(), targetRecipeId);
+		return new ResponseEntity<>(targetRecipeId, HttpStatus.OK);
 	}
 }

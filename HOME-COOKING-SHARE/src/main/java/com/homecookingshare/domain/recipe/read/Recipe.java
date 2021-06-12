@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.data.domain.AbstractAggregateRoot;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.homecookingshare.domain.recipe.Cooker;
 import com.homecookingshare.domain.recipe.MakeProcesses;
 import com.homecookingshare.domain.recipe.MakingTime;
@@ -15,7 +17,6 @@ import com.homecookingshare.domain.recipe.RecipeId;
 import com.homecookingshare.domain.recipe.RecipeMainImage;
 import com.homecookingshare.domain.recipe.RecipeTitle;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -24,7 +25,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@JsonInclude(value = Include.NON_NULL)
 public class Recipe extends AbstractAggregateRoot<Recipe> {
 	private RecipeId id;
 	
@@ -43,6 +45,10 @@ public class Recipe extends AbstractAggregateRoot<Recipe> {
 	
 	private Date createDateTime;
 
+	public Recipe(RecipeId recipeId) {
+		this.id = recipeId;
+	}
+	
 	public void changeTitle(RecipeTitle title) {
 		this.title = title;
 	}

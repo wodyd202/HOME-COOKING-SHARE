@@ -10,10 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.homecookingshare.domain.authKey.event.AuthSuccessed;
 import com.homecookingshare.domain.member.AuthType;
 import com.homecookingshare.domain.member.Email;
+import com.homecookingshare.domain.member.InterestRecipes;
 import com.homecookingshare.domain.member.MemberRule;
 import com.homecookingshare.domain.member.MemberState;
+import com.homecookingshare.domain.member.UnInterestedRecipe;
 import com.homecookingshare.domain.member.event.ChangedMemberImage;
 import com.homecookingshare.domain.member.event.ChangedMemberPassword;
+import com.homecookingshare.domain.member.event.InterestedRecipe;
 import com.homecookingshare.domain.member.event.RegisterdMember;
 import com.homecookingshare.domain.member.read.Member;
 import com.homecookingshare.query.member.infra.MemberReadRepository;
@@ -38,6 +41,7 @@ public class SimpleMemberProjector implements MemberProjector{
 				.authType(AuthType.NO)
 				.state(MemberState.CREATE)
 				.createDateTime(new Date())
+				.interestRecipes(new InterestRecipes())
 				.build();
 		memberReadRepository.save(member);
 	}
@@ -60,6 +64,20 @@ public class SimpleMemberProjector implements MemberProjector{
 	public void on(ChangedMemberPassword event) {
 		Member member = memberReadRepository.findByEmail(event.getTargetUserEmail()).get();
 		member.changePassword(event.getChangePassword());
+		memberReadRepository.save(member);
+	}
+	
+	@EventListener
+	public void on(InterestedRecipe event) {
+		Member member = memberReadRepository.findByEmail(event.getTargetUserEmail()).get();
+		member.interestRecipe(event.getTargetRecipe());
+		memberReadRepository.save(member);
+	}
+
+	@EventListener
+	public void on(UnInterestedRecipe event) {
+		Member member = memberReadRepository.findByEmail(event.getTargetUserEmail()).get();
+		member.unInterestRecipe(event.getTargetRecipe());
 		memberReadRepository.save(member);
 	}
 }

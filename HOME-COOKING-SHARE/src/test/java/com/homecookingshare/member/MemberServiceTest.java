@@ -28,13 +28,16 @@ import com.homecookingshare.common.fileUpload.FileUploader;
 import com.homecookingshare.domain.member.Email;
 import com.homecookingshare.domain.member.Member;
 import com.homecookingshare.domain.member.Password;
+import com.homecookingshare.query.recipe.infra.RecipeReadRepository;
 
 @SuppressWarnings("unchecked")
 public class MemberServiceTest {
 	
 	PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 	JpaMemberRepository memberRepository = mock(JpaMemberRepository.class);
-	MemberService memberService = new SimpleMemberService(passwordEncoder, memberRepository);
+	
+	RecipeReadRepository recipeReadRepository = mock(RecipeReadRepository.class);
+	MemberService memberService = new SimpleMemberService(passwordEncoder, memberRepository, recipeReadRepository);
 	
 	@Test
 	void 사용자_등록() {
