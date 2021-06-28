@@ -21,9 +21,7 @@ public class FileUploadService implements FileUploader {
 		if (originalFileName.equals("")) {
 			throw new IllegalArgumentException("파일명을 입력해주세요.");
 		}
-		String extension = originalFileName.substring(originalFileName.lastIndexOf(".")); // 파일 확장자
-		String savedFileName = fileName + extension; // 저장될 파일 명
-		File targetFile = new File(fileRoot + savedFileName);
+		File targetFile = new File(fileRoot + fileName);
 		try {
 			InputStream fileStream = file.getInputStream();
 			FileUtils.copyInputStreamToFile(fileStream, targetFile); // 파일 저장
@@ -31,6 +29,6 @@ public class FileUploadService implements FileUploader {
 			FileUtils.deleteQuietly(targetFile); // 저장된 파일 삭제
 			e.printStackTrace();
 		}
-		return savedFileName;
+		return fileName;
 	}
 }

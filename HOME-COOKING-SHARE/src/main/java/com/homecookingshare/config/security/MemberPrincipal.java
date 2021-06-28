@@ -41,8 +41,8 @@ public class MemberPrincipal implements UserDetails {
 
 	@Override
 	public boolean isAccountNonLocked() {
-		return true;
-//		return member.getAuthType() == AuthType.YES;
+//		return true;
+		return member.getAuthType() == AuthType.YES;
 	}
 
 	@Override
