@@ -72,7 +72,7 @@ public class RecipeValidatorTest {
 					Arrays.asList("용량"),
 					Arrays.asList(new MockMultipartFile("이름.jpg","이름.jpg","" ,new byte [] {})),
 					Arrays.asList("내용"),
-					Arrays.asList(1)
+					Arrays.asList(0)
 				);
 		validator.validate(command);
 	}

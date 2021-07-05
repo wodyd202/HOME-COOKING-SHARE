@@ -140,7 +140,7 @@ public class RecipeServiceTest {
 					Arrays.asList("용량"),
 					Arrays.asList(new MockMultipartFile("이름.jpg","이름.jpg","" ,new byte [] {})),
 					Arrays.asList("내용"),
-					Arrays.asList(1)
+					Arrays.asList(0)
 				);
 		
 		recipeService.create(validator, fileUploader, command, new Cooker("test@naver.com"));
