@@ -17,8 +17,6 @@
 - Jwt 토큰 스토어 및 Query 파트에 Redis 활용
 
 ## Installation
-Install the dependencies and devDependencies and start the server.
-
 
 
 ```sh
