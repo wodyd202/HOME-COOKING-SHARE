@@ -39,4 +39,9 @@ git clone https://github.com/wodyd202/HOME-COOKING-SHARE.git
 mvn test spring-boot:run
 ```
 
+###
+###
+###
+path : http://localhost:8081/swagger-ui.html
 
+![swagger](https://user-images.githubusercontent.com/77535935/124464982-cf405280-ddcf-11eb-9d30-ba3c2326ddb0.JPG)
