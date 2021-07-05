@@ -1,5 +1,8 @@
 # HOME-COOKING-SHARE
 ## 홈쿠킹 쉐어
+##### 레시피 공유 서비스
+###
+---
 
 ### ✨ Skills ✨
 - ![Build Status](https://img.shields.io/static/v1?label=&message=Spring%20Boot&color=green)
@@ -20,6 +23,8 @@ Install the dependencies and devDependencies and start the server.
 
 ```sh
 git clone https://github.com/wodyd202/HOME-COOKING-SHARE.git
+... change application-fileUpload.properties
+... change application-mail.properties
 mvn spring-boot:run
 ```
 
