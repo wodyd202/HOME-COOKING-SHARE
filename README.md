@@ -36,7 +36,7 @@ For production test...
 
 ```sh
 git clone https://github.com/wodyd202/HOME-COOKING-SHARE.git
-mvn test spring-boot:run
+mvn test
 ```
 
 ###
