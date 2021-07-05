@@ -12,11 +12,17 @@
 - ![Build Status](https://img.shields.io/static/v1?label=&message=Redis&color=red)
 - ![Build Status](https://img.shields.io/static/v1?label=&message=Junit5,%20Mockito&color=blue)
 
+###
+###
+
 ## Tech
 - DDD & CQRS 적용
 - Jwt 토큰 스토어 및 Query 파트에 Redis 활용
 
+###
+###
 ## Installation
+###
 
 
 ```sh
